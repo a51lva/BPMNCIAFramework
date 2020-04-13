@@ -1,0 +1,18 @@
+.image-logo--small{
+    width: 250px;
+    height: 250px;
+    background: #ccc;
+    border-radius: 100%;
+    border: 0;
+}
+
+.image-logo h6{
+	color: #ccc
+}
+
+.list-group--header {
+    background: #17a2b8;
+    color: #fff;
+    border: 0;
+    padding: 1rem 1.25rem;
+}
