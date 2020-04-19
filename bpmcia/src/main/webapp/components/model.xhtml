@@ -1,0 +1,34 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+  <div class="row mt-50">
+	<div class="col-12">
+		<h4 class="text-uppercase">Tasks Elements</h4>
+	</div>
+  </div>
+  
+  <div class="row">
+  	<div class="col-12">
+  		<table class="table table-hover">
+		  <thead class="thead-light">
+		    <tr>
+		      <th scope="col">#</th>
+		      <th scope="col" class="text-uppercase align-middle">Task ID</th>
+		      <th scope="col" class="text-uppercase align-middle">Task Name</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<ui:repeat var="taskElement" value="#{main.taskElements}" varStatus="status">
+		    <tr>
+		      <th scope="row" class="align-middle">#{status.index}</th>
+		      <td class="align-middle">#{taskElement.getAttributeValue("id")}</td>
+		      <td class="align-middle">#{taskElement.getAttributeValue("name")}</td>
+		    </tr>
+		    </ui:repeat>
+		  </tbody>
+		</table>
+  	</div>
+  </div>
+</div>

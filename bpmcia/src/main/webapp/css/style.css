@@ -1,6 +1,6 @@
 .image-logo--small{
-    width: 250px;
-    height: 250px;
+    width: 60%;
+    height: 60%;
     background: #ccc;
     border-radius: 100%;
     border: 0;
@@ -10,9 +10,25 @@
 	color: #ccc
 }
 
-.list-group--header {
+.side-menu .list-group-flush .list-group--header {
     background: #17a2b8;
     color: #fff;
     border: 0;
-    padding: 1rem 1.25rem;
+    padding: 1rem 1.25rem!important;
+    border-radius: 0 100px 100px 0!important;
+}
+
+.mt-50 {
+    margin-top: 50px;
+}
+
+.side-menu .list-group-flush .list-group-item {
+    border: 0!important;
+    margin-bottom: 0!important;
+    padding-bottom: 0
+}
+
+.side-menu .list-group-flush .list-item--copy {
+    color: #b3b3b3;
+    font-size: 12px;
 }
