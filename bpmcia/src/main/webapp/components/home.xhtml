@@ -1,19 +1,23 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
 	<div class="row mt-4">
-		<div class="col-12">
-			<h1 class="display-4 text-uppercase">BPMN CIA Made Simple</h1>
+		<div class="col-12 d-flex justify-content-between">
+			<h1 class="display-4 text-uppercase mb-0">BPMN CIA Made Simple</h1>
+			<div class="d-flex justify-content-between">
+				<p:commandButton rendered="#{main.getCanExecute()}" styleClass="btn btn-primary btn-lg text-uppercase ml-3" value="Execute" action="#{main.changesExecute}" update="@form"/>
+			</div>
 		</div>
 	</div>
 	<div class="row my-5">
 	  <div class="col-sm-6 ">
 	    <div class="card">
 	      <div class="card-body">
-	        <h5 class="card-title">Upload BPMN Updated Version File</h5>
+	        <h5 class="card-title">Upload BPMN File</h5>
 	        <p class="card-text">Use the button bellow to upload a first version of BPMN file.</p>
-	        <button class="btn btn-primary text-uppercase">Upload BPMN File</button>
+	        <button class="btn btn-primary text-uppercase">Upload BPMN File</button> <span>#{main.firstfile}</span>
 	      </div>
 	    </div>
 	  </div>
@@ -22,11 +26,13 @@
 	      <div class="card-body">
 	        <h5 class="card-title">Upload BPMN Updated Version File</h5>
 	        <p class="card-text">Use the button bellow to upload an updated version of BPMN file to be analysed</p>
-	        <button class="btn btn-primary text-uppercase">Upload BPMN File</button>
+	        <button class="btn btn-primary text-uppercase">Upload BPMN File</button> <span>#{main.updatedfile}</span>
 	      </div>
 	    </div>
 	  </div>
   </div>
+  
+  <ui:include src="model.xhtml"></ui:include>
   
   <div class="row mt-50">
 	<div class="col-12">
@@ -47,36 +53,7 @@
 		    </tr>
 		  </thead>
 		  <tbody>
-		    <tr>
-		      <th scope="row" class="align-middle">1</th>
-		      <td class="align-middle">BPMN-diagram-of-the-running-artifacts-that-should-be-monitored-are-highlighted.bpmn</td>
-		      <td class="align-middle">BPMN-diagram-of-the-running-artifacts-that-should-be-monitored-are-highlighted-Updated.bpmn</td>
-		      <td class="text-center align-middle">5s</td>
-		      <td class="align-middle">
-		      	<span class="d-block">8:02 PM</span>
-				<span>Sunday, April 12, 2020 (GMT-1)</span>
-			  </td>
-		    </tr>
-		    <tr>
-		      <th scope="row" class="align-middle">2</th>
-		      <td class="align-middle">Process-model-from-the-viewpoint-of-the-container-top-and-the-truck-bottom.bpmn</td>
-		      <td class="align-middle">Process-model-from-the-viewpoint-of-the-container-top-and-the-truck-bottom-12.bpmn</td>
-		      <td class="align-middle text-center">6s</td>
-		      <td class="align-middle">
-		      	<span class="d-block">8:02 PM</span>
-				<span>Sunday, April 12, 2020 (GMT-1)</span>
-			  </td>
-		    </tr>
-		    <tr >
-		      <th scope="row" class="align-middle">3</th>
-		      <td class="align-middle">Larry</td>
-		      <td class="align-middle">the Bird</td>
-		      <td class="align-middle text-center">6s</td>
-		      <td class="align-middle">
-		      	<span class="d-block">8:02 PM</span>
-				<span>Sunday, April 12, 2020 (GMT-1)</span>
-			  </td>
-		    </tr>
+		    
 		  </tbody>
 		</table>
   	</div>
