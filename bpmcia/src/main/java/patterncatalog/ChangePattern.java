@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.joda.time.format.PeriodFormatter;
@@ -88,5 +89,15 @@ public abstract class ChangePattern{
 		String elementId = element.getAttributeValue("id");
 		
 		return getEquivalentMapElements().get(elementId);
+	}
+	
+	public ModelElementInstance getEquivalentElement(ModelElementInstance element, Collection<ModelElementInstance> elements) {
+		if(elementExist(element, elements)) {
+			Optional<ModelElementInstance> opElement = elements.stream().filter(el -> el.getAttributeValue("id").equalsIgnoreCase(element.getAttributeValue("id"))).findFirst();
+			
+			return opElement.get();
+		}
+		
+		return null;
 	}
 }

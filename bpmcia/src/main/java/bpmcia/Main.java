@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -17,10 +18,12 @@ import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.Activity;
 import org.camunda.bpm.model.bpmn.instance.FlowElement;
+import org.camunda.bpm.model.bpmn.instance.Gateway;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.camunda.bpm.model.xml.type.ModelElementType;
 import org.primefaces.model.file.UploadedFile;
 
+import patterncatalog.ControlFlowDifferentDependenciesPattern;
 import patterncatalog.InsertedActivitiesPattern;
 import patterncatalog.RemovedActivitiesPattern;
 
@@ -34,9 +37,11 @@ public class Main {
 	
 	private Collection< ModelElementInstance> removedActivities;
 	private Collection< ModelElementInstance> insertedActivities;
+	private Collection< ModelElementInstance> incomeSequenceFlowChangedActivities;
 	
 	private RemovedActivitiesPattern removedActivitiesPattern;
 	private InsertedActivitiesPattern insertedActivitiesPattern;
+	private ControlFlowDifferentDependenciesPattern control; 
 	
 	private Boolean canExecute;
 	
@@ -44,42 +49,56 @@ public class Main {
 	@PostConstruct
 	public void init() {
 		try {
-			String fileName = "shipModel.bpmn";
-			File file = getFileFromResources(fileName);
+			String fileNameOld = "shipModel.bpmn", fileNameUpdated = "shipModel2.bpmn";
+			
+			File fileOld = getFileFromResources(fileNameOld), fileUpdated = getFileFromResources(fileNameUpdated);;
 			 
-		    BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
+		    BpmnModelInstance modelInstanceOld = Bpmn.readModelFromFile(fileOld), modelInstanceUpdated = Bpmn.readModelFromFile(fileUpdated);
+		    
 		
-			ModelElementType elementType = modelInstance.getModel().getType(FlowElement.class);
+			ModelElementType elementTypeOld = modelInstanceOld.getModel().getType(FlowElement.class);
 						
-			Collection<ModelElementInstance> elemenInstances = modelInstance.getModelElementsByType(elementType);
+			Collection<ModelElementInstance> elemenInstancesOld = modelInstanceOld.getModelElementsByType(elementTypeOld);
 			
-			setElements1(elemenInstances);
+			setElements1(elemenInstancesOld);
 			
-			setFirstfile(fileName);
+			setFirstfile(fileNameOld);
+						
+			ModelElementType activityTypeOld = modelInstanceOld.getModel().getType(Activity.class);
 			
+			Collection<ModelElementInstance> activityInstancesOld = modelInstanceOld.getModelElementsByType(activityTypeOld);			
 			
-			ModelElementType activityType = modelInstance.getModel().getType(Activity.class);
+			ModelElementType gatewayTypeOld = modelInstanceOld.getModel().getType(Gateway.class);
 			
-			Collection<ModelElementInstance> activityInstances1 = modelInstance.getModelElementsByType(activityType);			
-			
-			
-			fileName = "shipModel2.bpmn";
-			
-			file = getFileFromResources(fileName);
-			 
-		    modelInstance = Bpmn.readModelFromFile(file);
-		
-			elemenInstances = modelInstance.getModelElementsByType(elementType);
-			
-			setElements2(elemenInstances);
-			
-			setUpdatedfile(fileName);
+			Collection<ModelElementInstance> gatewayInstancesOld = modelInstanceOld.getModelElementsByType(gatewayTypeOld);
 			
 			
-			Collection<ModelElementInstance> activityInstances2 = modelInstance.getModelElementsByType(activityType);
 			
-			removedActivitiesPattern = new RemovedActivitiesPattern(activityInstances1, activityInstances2);
-			insertedActivitiesPattern = new InsertedActivitiesPattern(activityInstances1, activityInstances2);
+			
+			ModelElementType elementTypeUpdated = modelInstanceUpdated.getModel().getType(FlowElement.class);
+			
+			Collection<ModelElementInstance> elemenInstancesUpdated = modelInstanceUpdated.getModelElementsByType(elementTypeUpdated);
+			
+			setElements2(elemenInstancesUpdated);
+			
+			setUpdatedfile(fileNameUpdated);
+						
+			ModelElementType activityTypeUpdated = modelInstanceUpdated.getModel().getType(Activity.class);
+			
+			Collection<ModelElementInstance> activityInstancesUpdated = modelInstanceUpdated.getModelElementsByType(activityTypeUpdated);			
+			
+			ModelElementType gatewayTypeUpdated = modelInstanceUpdated.getModel().getType(Gateway.class);
+			
+			Collection<ModelElementInstance> gatewayInstancesUpdated = modelInstanceUpdated.getModelElementsByType(gatewayTypeUpdated);
+			
+			
+			
+			removedActivitiesPattern = new RemovedActivitiesPattern(activityInstancesOld, activityInstancesUpdated);
+			insertedActivitiesPattern = new InsertedActivitiesPattern(activityInstancesOld, activityInstancesUpdated);
+			
+			control = new ControlFlowDifferentDependenciesPattern(activityInstancesOld, activityInstancesUpdated);
+			control.setGatewayElementsOld(convertToCollectionGateway(gatewayInstancesOld));
+			control.setGatewayElementsUpdated(convertToCollectionGateway(gatewayInstancesUpdated));
 			
 			setCanExecute(true);
 			
@@ -90,6 +109,14 @@ public class Main {
 		
 		setAppname("BPMN Based CIA Framework");
 		
+	}
+	
+	public ControlFlowDifferentDependenciesPattern getControl() {
+		return control;
+	}
+	
+	public void setControl(ControlFlowDifferentDependenciesPattern control) {
+		this.control = control;
 	}
 	
 	public String getAppname() {
@@ -156,12 +183,23 @@ public class Main {
 		this.canExecute = canExecute;
 	}
 	
+	public Collection<ModelElementInstance> getIncomeSequenceFlowChangedActivities() {
+		return incomeSequenceFlowChangedActivities;
+	}
+	
+	public void setIncomeSequenceFlowChangedActivities(
+			Collection<ModelElementInstance> incomeSequenceFlowChangedActivities) {
+		this.incomeSequenceFlowChangedActivities = incomeSequenceFlowChangedActivities;
+	}
+	
 	public void changesExecute() {
 		removedActivitiesPattern.execute();
 		insertedActivitiesPattern.execute();
+		control.execute();
 		
 		setRemovedActivities(removedActivitiesPattern.getRemovedElements());
 		setInsertedActivities(insertedActivitiesPattern.getInsertedElements());
+		setIncomeSequenceFlowChangedActivities(control.getChangedElements());
 	}
 	
 	private File getFileFromResources(String fileName) {
@@ -169,11 +207,25 @@ public class Main {
         ClassLoader classLoader = getClass().getClassLoader();
 
         URL resource = classLoader.getResource(fileName);
+        
         if (resource == null) {
             throw new IllegalArgumentException("file is not found!");
         } else {
             return new File(resource.getFile());
         }
 
-    }	
+    }
+	
+	private Collection<Gateway> convertToCollectionGateway(Collection< ModelElementInstance> gateways){
+		
+		Collection<Gateway> result = new ArrayList<Gateway>();
+		
+		if(gateways != null) {
+			for(ModelElementInstance gateway: gateways){
+				result.add((Gateway)gateway);
+			}
+		}
+		
+		return result;
+	}
 }

@@ -15,9 +15,9 @@ public class InsertedActivitiesPattern extends ChangePattern{
 		this.insertedElements = null;
 	}
 	
-	public InsertedActivitiesPattern(Collection< ModelElementInstance> activityElement1, Collection< ModelElementInstance> activityElements2) {
+	public InsertedActivitiesPattern(Collection< ModelElementInstance> activityElements1, Collection< ModelElementInstance> activityElements2) {
 		this.insertedElements = new ArrayList<ModelElementInstance>();
-		this.modelElements1 = activityElement1;
+		this.modelElements1 = activityElements1;
 		this.modelElements2 = activityElements2;
 		this.equivalentMapElements = new HashMap<String, ModelElementInstance>();
 		this.executionTime = 0L;
