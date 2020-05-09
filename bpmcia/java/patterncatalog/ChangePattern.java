@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Optional;
 
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.joda.time.format.PeriodFormatter;
@@ -13,15 +12,15 @@ import org.joda.time.format.PeriodFormatterBuilder;
 
 public abstract class ChangePattern{
 	
-	Collection< ModelElementInstance> modelElements1;
-	Collection< ModelElementInstance> modelElements2;
+	Collection< ModelElementInstance> modelElementsOld;
+	Collection< ModelElementInstance> modelElementsUpdated;
 	HashMap<String, ModelElementInstance> equivalentMapElements;
 	Long executionTime = 0L;
 	
 	public ChangePattern() {
 		this.executionTime = 0L;
-		this.modelElements1 = new ArrayList<ModelElementInstance>();
-		this.modelElements2 = new ArrayList<ModelElementInstance>();
+		this.modelElementsOld = new ArrayList<ModelElementInstance>();
+		this.modelElementsUpdated = new ArrayList<ModelElementInstance>();
 		this.equivalentMapElements = new HashMap<String, ModelElementInstance>();
 	}
 	
@@ -33,20 +32,20 @@ public abstract class ChangePattern{
 		this.executionTime = executionTime;
 	}
 	
-	public Collection<ModelElementInstance> getModelElements1() {
-		return modelElements1;
+	public Collection<ModelElementInstance> getModelElementsOld() {
+		return modelElementsOld;
 	}
 	
-	public void setModelElements1(Collection<ModelElementInstance> modelElements1) {
-		this.modelElements1 = modelElements1;
+	public void setModelElementsOld(Collection<ModelElementInstance> modelElements) {
+		this.modelElementsOld = modelElements;
 	}
 	
-	public Collection<ModelElementInstance> getModelElements2() {
-		return modelElements2;
+	public Collection<ModelElementInstance> getModelElementsUpdated() {
+		return modelElementsUpdated;
 	}
 	
-	public void setModelElements2(Collection<ModelElementInstance> modelElements2) {
-		this.modelElements2 = modelElements2;
+	public void setModelElementsUpdated(Collection<ModelElementInstance> modelElements) {
+		this.modelElementsUpdated = modelElements;
 	}
 	
 	public HashMap<String, ModelElementInstance> getEquivalentMapElements() {
@@ -80,24 +79,9 @@ public abstract class ChangePattern{
 	}
 	
 	
-	public boolean elementExist(ModelElementInstance element, Collection<ModelElementInstance> elements) {
-		boolean result = elements.stream().anyMatch(el -> el.getAttributeValue("id").equalsIgnoreCase(element.getAttributeValue("id")));
-		return result;
-	}
-	
 	public ModelElementInstance getEquivalentElement(ModelElementInstance element) {
 		String elementId = element.getAttributeValue("id");
 		
 		return getEquivalentMapElements().get(elementId);
-	}
-	
-	public ModelElementInstance getEquivalentElement(ModelElementInstance element, Collection<ModelElementInstance> elements) {
-		if(elementExist(element, elements)) {
-			Optional<ModelElementInstance> opElement = elements.stream().filter(el -> el.getAttributeValue("id").equalsIgnoreCase(element.getAttributeValue("id"))).findFirst();
-			
-			return opElement.get();
-		}
-		
-		return null;
 	}
 }

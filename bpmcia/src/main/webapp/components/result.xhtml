@@ -1,0 +1,94 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" class="result-container">
+	
+	<div class="row my-4">
+		<div class="col-12 d-flex justify-content-between align-itens--center">
+			<h1 class="display-4 text-uppercase mb-0">Inpact Analysis Report</h1>
+			<p:commandLink id="download" styleClass="btn btn-primary btn-lg text-uppercase ml-3" style="height:auto" title="Export to PDF" disabled="#{main.getBpmnReportModels().size() == 0}">
+				<i class="fa fa-download" aria-hidden="true"></i>
+			</p:commandLink>
+			<p:tooltip id="toolTipFocus" for="download"/>
+		</div>
+	</div>
+	
+	<p:outputPanel rendered="#{main.getBpmnReportModels().size() > 0}">
+		<div class="row my-5">
+		  <div class="col-sm-6 ">
+		    <div class="card">
+		      <div class="card-body">
+		        <h5 class="card-title mb-0 d-flex justify-content-between">
+	        		<span><b>Old BPMN File:</b> <span>#{main.firstfile}</span></span>
+	        		<spa>
+	        			<p:commandLink styleClass="text-uppercase ml-3" value="View "> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
+	        		</spa>
+	        	</h5>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="col-sm-6">
+		    <div class="card">
+		      <div class="card-body">
+		        <h5 class="card-title mb-0 d-flex justify-content-between">
+	        		<span><b>Updated BPMN File:</b> <span>#{main.updatedfile}</span></span>
+	        		<spa>
+	        			<p:commandLink styleClass="text-uppercase ml-3" value="View "> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
+	        		</spa>
+	        	</h5>
+		      </div>
+		    </div>
+		  </div>
+	  </div>
+		
+		<p:outputPanel id="changeResultPanel">
+			<div class="row">
+			  	<div class="col-12">		  		
+			  		<table class="table table-hover">
+					  <thead class="thead-light">
+					    <tr>
+					      <th scope="col" width="50px">#</th>
+					      <th scope="col" width="300px" class="text-uppercase align-middle">Changed Activity</th>
+					      <th scope="col" class="text-uppercase align-middle">Change Pattern</th>
+					      <th scope="col" class="text-uppercase align-middle">Direct Impacted Activity</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  	<ui:repeat var="reportModels" value="#{main.getBpmnReportModels()}" varStatus="status">
+						    <tr>
+						      <th scope="row" class="align-middle">#{status.index + 1}</th>
+						      <td class="align-middle">#{reportModels.getChangedActivity()}</td>
+						      <td class="align-middle">#{reportModels.getChangePattern()}</td>
+						      <td class="align-middle">#{reportModels.getInpactedActivity()}</td>
+						    </tr>
+					    </ui:repeat>
+					  </tbody>
+					</table>
+			  	</div>
+		  </div>
+		  <div class="row">
+		  		<p:outputPanel rendered="#{main.getBpmnReportModels().size() > 0}" styleClass="col-5">
+		  			<figure class="highcharts-figure">
+					    <div id="pieContainer" class="chartContainer"></div>
+					</figure>
+					<p:remoteCommand onstart="pieChart('pieContainer', #{main.getPieChartData()})" autoRun="true"/>
+		  		</p:outputPanel>
+		  		
+		  		<p:outputPanel rendered="#{main.getBpmnReportModels().size() > 0}" styleClass="col-7">
+		  			<figure class="highcharts-figure">
+					    <div id="columnContainer"  class="chartContainer"></div>
+					</figure>
+					<p:remoteCommand onstart="columnChart('columnContainer', #{main.getColumnCategories()}, #{main.getOldData()}, #{main.getUpdatedData()} )" autoRun="true"/>
+		  		</p:outputPanel>
+		  </div>
+		</p:outputPanel>
+	  	
+  	</p:outputPanel>
+  	
+  	<p:outputPanel rendered="#{main.getBpmnReportModels().size() == 0}">
+  		<div class="alert alert-light" role="alert">
+		  Nothing to be Showed!
+		</div>
+  	</p:outputPanel>
+</div>

@@ -4,58 +4,98 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 	<div class="row mt-4">
-		<div class="col-12 d-flex justify-content-between">
+		<p:fileUpload listener="#{fileUploadView.handleFileUpload}" update="@form" rendered="false"/>
+		<div class="col-12 d-flex justify-content-between align-itens--center">
+			
 			<h1 class="display-4 text-uppercase mb-0">BPMN CIA Made Simple</h1>
+			
 			<div class="d-flex justify-content-between">
-				<p:commandButton rendered="#{main.getCanExecute()}" styleClass="btn btn-primary btn-lg text-uppercase ml-3" value="Execute" action="#{main.changesExecute}" update="@form"/>
+				
+				<p:commandLink rendered="#{main.getCanExecute()}" styleClass="btn btn-primary btn-lg text-uppercase ml-3" style="height:auto" action="#{main.changesExecute}" update="@form">
+					<i class="fa fa-play-circle" aria-hidden="true"></i>
+					<h:outputText value=" Start" />
+				</p:commandLink>
+				
+				<p:commandLink styleClass="btn btn-outline-secondary btn-lg text-uppercase ml-3" style="height:auto" action="#{main.clear}" update="@form">
+					<i class="fa fa-trash"></i>
+					<h:outputText value=" Clear" />
+				</p:commandLink>
 			</div>
+			
 		</div>
 	</div>
 	<div class="row my-5">
 	  <div class="col-sm-6 ">
 	    <div class="card">
 	      <div class="card-body">
-	        <h5 class="card-title">Upload BPMN File</h5>
-	        <p class="card-text">Use the button bellow to upload a first version of BPMN file.</p>
-	        <button class="btn btn-primary text-uppercase">Upload BPMN File</button> <span>#{main.firstfile}</span>
+	        
+	        <p:outputPanel rendered="#{main.firstfile ne ''}"> 
+	        	<h5 class="card-title mb-0 d-flex justify-content-between">
+	        		<span><b>Old BPMN File:</b> <span>#{main.firstfile}</span></span>
+	        		<spa>
+	        			<p:commandLink styleClass="text-uppercase ml-3" value="View "> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
+	        		</spa>
+	        	</h5>
+	        </p:outputPanel>  
+	        
+	        <p:outputPanel rendered="#{main.firstfile eq ''}">
+	        	<h5 class="card-title">Upload Old BPMN File</h5>
+	        	<p class="card-text">Use the button bellow to upload an old version of BPMN file.</p>
+	        	<button class="btn btn-outline-primary text-uppercase">Upload BPMN File</button> 
+	        </p:outputPanel>
+	        
 	      </div>
 	    </div>
 	  </div>
 	  <div class="col-sm-6">
 	    <div class="card">
 	      <div class="card-body">
-	        <h5 class="card-title">Upload BPMN Updated Version File</h5>
-	        <p class="card-text">Use the button bellow to upload an updated version of BPMN file to be analysed</p>
-	        <button class="btn btn-primary text-uppercase">Upload BPMN File</button> <span>#{main.updatedfile}</span>
+	      
+	        <p:outputPanel rendered="#{main.updatedfile ne ''}"> 
+	        	<h5 class="card-title mb-0 d-flex justify-content-between">
+	        		<span><b>Updated BPMN File:</b> <span>#{main.updatedfile}</span></span>
+	        		<spa>
+	        			<p:commandLink styleClass="text-uppercase ml-3" value="View "> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
+	        		</spa>
+	        	</h5>
+	        </p:outputPanel>
+	        <p:outputPanel rendered="#{main.updatedfile eq ''}">
+	        	<h5 class="card-title">Upload BPMN Updated Version File</h5>
+	        	<p class="card-text">Use the button bellow to upload an updated version of BPMN file</p>
+	        	<button class="btn btn-outline-primary text-uppercase">Upload BPMN File</button>
+	        </p:outputPanel>
+	        
 	      </div>
 	    </div>
 	  </div>
   </div>
   
-  <ui:include src="model.xhtml"></ui:include>
+  <p:outputPanel>
   
-  <div class="row mt-50">
-	<div class="col-12">
-		<h4 class="text-uppercase">Last Analysed Files</h4>
-	</div>
-  </div>
+	  <div class="row mt-50">
+		<div class="col-12">
+			<h4 class="text-uppercase">Previous Analysis </h4>
+		</div>
+	  </div>
+	  
+	  <div class="row">
+	  	<div class="col-12">
+	  		<table class="table table-hover">
+			  <thead class="thead-light">
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col" class="text-uppercase align-middle">Old Model</th>
+			      <th scope="col" class="text-uppercase align-middle">Updated Model</th>
+			      <th scope="col" class="text-uppercase text-center align-middle" width="150px">Actions</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    
+			  </tbody>
+			</table>
+	  	</div>
+	  </div>
+	  
+  </p:outputPanel>
   
-  <div class="row">
-  	<div class="col-12">
-  		<table class="table table-hover">
-		  <thead class="thead-light">
-		    <tr>
-		      <th scope="col">#</th>
-		      <th scope="col" class="text-uppercase align-middle">Fisrt Version</th>
-		      <th scope="col" class="text-uppercase align-middle">Updated Version</th>
-		      <th scope="col" class="text-uppercase text-center align-middle" width="150px">Analysis Time</th>
-		      <th scope="col" class="text-uppercase align-middle" width="250px">Date</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    
-		  </tbody>
-		</table>
-  	</div>
-  </div>
 </div>

@@ -1,14 +1,18 @@
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd; justify-content:space-between">
+<nav xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" class="navbar fixed-top navbar-expand-lg navbar-light" style="background-color: #e3f2fd; justify-content:space-between">
 	  <a class="navbar-brand" href="#">
 			<img src="./img/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt=""/>
-    		Navbar
+    		#{main.appname} 
 	  </a>	
 	  <ul class="navbar-nav">	      
 	      <li class="nav-item dropdown">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language</a>
 	        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="right: 0;left: unset">
 	          <a class="dropdown-item" href="#">English</a>
-	          <a class="dropdown-item" href="#">Portugues</a>
+	          <a class="dropdown-item" href="#" style="color: #eeeeee">Portugues</a>
 	        </div>
 	      </li>
 	  </ul>

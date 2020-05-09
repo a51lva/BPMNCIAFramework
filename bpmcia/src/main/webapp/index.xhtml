@@ -9,27 +9,42 @@
 	<h:head>
 		<meta charset="utf-8"/>
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>		
-	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
 		<link rel="stylesheet" href="./css/style.css"/>
+		<link rel="stylesheet" href="./css/font-awesome.min.css"/>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="./js/script.js"></script>
 	    <title>#{main.appname}</title>	
 	</h:head>
 	<h:body>
 		<h:form>
 		    <p:outputPanel id="mainPanel" deferred="true">
 		        <ui:include src="components/navbar.xhtml"></ui:include>
-				<div class="container-fluid">
+				<div class="container-fluid mt-60">
 					<div class="row">
-					    <div class="col-2 pl-0">
+					    <div class="col-md-2 px-0 sidebar">
 					    	<ui:include src="components/sidemenu.xhtml"></ui:include>				
 						</div>
-					    <div class="col-10">
-							<ui:include src="components/home.xhtml"></ui:include>
+					    <div class="col-md-10 offset-md-2 main">
+					    	
+					    	<p:outputPanel rendered="#{(main.getSidebarMenu().getSelectedMenu() eq 'dashboard')}">
+								<ui:include src="components/home.xhtml"></ui:include>
+							</p:outputPanel>
+							
+							<p:outputPanel rendered="#{(main.getSidebarMenu().getSelectedMenu() eq 'result')}">
+								<ui:include src="components/result.xhtml"></ui:include>
+							</p:outputPanel>
+							
+							<p:outputPanel rendered="#{(main.getSidebarMenu().getSelectedMenu() eq 'catalog')}">
+								<ui:include src="components/catalog.xhtml"></ui:include>
+							</p:outputPanel>
 						</div>
 					  </div>
 				</div>
 		    </p:outputPanel>
 		</h:form>		
 		
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	</h:body>
 </html>

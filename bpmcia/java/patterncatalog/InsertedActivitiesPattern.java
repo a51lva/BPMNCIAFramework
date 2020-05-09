@@ -7,9 +7,13 @@ import java.util.HashMap;
 
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 
+import bpmcia.CIABpmnReportModel;
+import bpmcia.CIABpmnUtil;
+
 public class InsertedActivitiesPattern extends ChangePattern{
 	
 	private Collection< ModelElementInstance> insertedElements;
+	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
 	public InsertedActivitiesPattern() {
 		this.insertedElements = null;
@@ -17,10 +21,11 @@ public class InsertedActivitiesPattern extends ChangePattern{
 	
 	public InsertedActivitiesPattern(Collection< ModelElementInstance> activityElements1, Collection< ModelElementInstance> activityElements2) {
 		this.insertedElements = new ArrayList<ModelElementInstance>();
-		this.modelElements1 = activityElements1;
-		this.modelElements2 = activityElements2;
+		this.modelElementsOld = activityElements1;
+		this.modelElementsUpdated = activityElements2;
 		this.equivalentMapElements = new HashMap<String, ModelElementInstance>();
 		this.executionTime = 0L;
+		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 	}
 	
 	public Collection<ModelElementInstance> getInsertedElements() {
@@ -31,19 +36,43 @@ public class InsertedActivitiesPattern extends ChangePattern{
 		this.insertedElements = insertedElements;
 	}
 	
+	public Collection<CIABpmnReportModel> getBpmnReportModels() {
+		return bpmnReportModels;
+	}
+	
+	public void setBpmnReportModels(Collection<CIABpmnReportModel> bpmnReportModels) {
+		this.bpmnReportModels = bpmnReportModels;
+	}
+	
 	public void execute() {
 		setInsertedElements(new ArrayList<ModelElementInstance>());
 		Instant startMoment = Instant.now();
 		
-		for (ModelElementInstance element:getModelElements2()) {
+		for (ModelElementInstance element:getModelElementsUpdated()) {
 			
 			ModelElementInstance equivalentElement = (getEquivalentElement(element)!=null)?getEquivalentElement(element):element;
 
-			if(!elementExist(equivalentElement, getModelElements1())) {
+			if(!CIABpmnUtil.elementExist(equivalentElement, getModelElementsOld())) {
 				insertedElements.add(equivalentElement);
 			}
 		}
 		
 		setExecutionTime(calculateExecutionTime(startMoment));
+	}
+	
+	public void calculateDirectedInpactedActivities() {
+		for (ModelElementInstance element:insertedElements) {	
+			
+			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsUpdated());
+			
+			for(String targetId: targetActivities) {
+				ModelElementInstance targetElement = CIABpmnUtil.getElement(targetId, getModelElementsUpdated());
+				if(targetElement != null ) {
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Inserted Activity", targetElement.getAttributeValue("name"));
+				
+					bpmnReportModels.add(bpmnReportModel);
+				}
+			}
+		}
 	}
 }

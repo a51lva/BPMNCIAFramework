@@ -1,19 +1,34 @@
-<div class="side-menu">
-	<div class="image-logo text-center">
-		<img src="./img/image.png" class="image-logo--small mx-auto mt-5 mb-4"/>
-		<h6 class="text-uppercase">#{main.appname}</h6>
-	</div>
-	
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" class="side-menu">
 	<ul class="list-group list-group-flush mt-5">
-	  <li class="list-group-item list-group--header"><h6 class="text-uppercase mb-0">Menu</h6></li>
-	  <li class="list-group-item">Dashboard</li>
-	  <li class="list-group-item">Treability Management</li>
-	  <li class="list-group-item">Inpact Analysis Result</li>
-	  <li class="list-group-item">Change Catalog</li>	  
-	  <li class="list-group-item list-group--header mt-3 "><h6 class="text-uppercase mb-0">Help</h6></li>
-	  <li class="list-group-item"><a href="//www.omg.org/spec/BPMN/2.0/PDF" target="_blank">BPMN Standard</a></li>
-	  <li class="list-group-item"><a href="//www.omg.org/cgi-bin/doc?dtc/10-06-02.pdf" target="_blank">BPMN Examples</a></li>
-	  <li class="list-group-item mt-50">About</li>
+	  <li class="dropdown-header " role="presentation"><h6 class="text-uppercase mb-0">Menu</h6></li>
+	  
+	  <li class="list-group-item #{(main.getSidebarMenu().getSelectedMenu() eq 'dashboard')? 'list-item--selected':''}">
+	  		<p:commandLink value="Inpact Analysis" actionListener="#{main.getSidebarMenu().setSelectedMenu('dashboard')}" update="@form"/>
+	  </li>
+	  
+	  <li class="list-group-item #{(main.getSidebarMenu().getSelectedMenu() eq 'traceability')? 'list-item--selected':''}" >
+	  		<p:commandLink value="Traceability Information" actionListener="#{main.getSidebarMenu().setSelectedMenu('traceability')}" update="@form"/>
+	  </li>
+	 
+	  <li class="list-group-item #{(main.getSidebarMenu().getSelectedMenu() eq 'result')? 'list-item--selected':''}">
+	  		<p:commandLink value="CIA Result" actionListener="#{main.getSidebarMenu().setSelectedMenu('result')}" update="@form" disabled="#{main.getBpmnReportModels().size() == 0}"/>
+	  </li>
+	  
+	  <li class="list-group-item #{(main.getSidebarMenu().getSelectedMenu() eq 'catalog')? 'list-item--selected':''}">
+	  		<p:commandLink value="Change Patterns Catalog" actionListener="#{main.getSidebarMenu().setSelectedMenu('catalog')}" update="@form"/>
+	  </li>
+	  
+	  <li class="dropdown-header  mt-5" role="presentation"><h6 class="text-uppercase mb-0">Help</h6></li>
+	  <li class="list-group-item list-item--link"><a href="//www.omg.org/spec/BPMN/2.0/PDF" target="_blank">BPMN Standard</a></li>
+	  <li class="list-group-item list-item--link"><a href="//www.omg.org/cgi-bin/doc?dtc/10-06-02.pdf" target="_blank">BPMN Examples</a></li>
+	 
+	  <li class="list-group-item mt-50 #{(main.getSidebarMenu().getSelectedMenu() eq 'about')? 'list-item--selected':''}">
+		<p:commandLink value="About" actionListener="#{main.getSidebarMenu().setSelectedMenu('about')}" update="@form"/>
+	  </li>
 	  <li class="list-group-item list-item--copy text-uppercase ">&#169; 2020 Acilio Silva. All rights reserved.</li>
 	</ul>
 </div>
