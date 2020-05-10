@@ -12,8 +12,8 @@
 			<div class="d-flex justify-content-between">
 				
 				<p:commandLink rendered="#{main.getCanExecute()}" styleClass="btn btn-primary btn-lg text-uppercase ml-3" style="height:auto" action="#{main.changesExecute}" update="@form">
-					<i class="fa fa-play-circle" aria-hidden="true"></i>
-					<h:outputText value=" Start" />
+					<i class="fa fa-cogs" aria-hidden="true"></i>
+					<h:outputText value=" Analyse" />
 				</p:commandLink>
 				
 				<p:commandLink styleClass="btn btn-outline-secondary btn-lg text-uppercase ml-3" style="height:auto" action="#{main.clear}" update="@form">
@@ -30,18 +30,19 @@
 	      <div class="card-body">
 	        
 	        <p:outputPanel rendered="#{main.firstfile ne ''}"> 
-	        	<h5 class="card-title mb-0 d-flex justify-content-between">
+	        	<h5 class="card-title mb-0 d-flex justify-content-between align-itens--center">
 	        		<span><b>Old BPMN File:</b> <span>#{main.firstfile}</span></span>
-	        		<spa>
-	        			<p:commandLink styleClass="text-uppercase ml-3" value="View "> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
-	        		</spa>
+	        		<p:commandLink styleClass="text-uppercase ml-3 min-width--110 text-right" value="View " disabled="true"> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
 	        	</h5>
 	        </p:outputPanel>  
 	        
 	        <p:outputPanel rendered="#{main.firstfile eq ''}">
 	        	<h5 class="card-title">Upload Old BPMN File</h5>
 	        	<p class="card-text">Use the button bellow to upload an old version of BPMN file.</p>
-	        	<button class="btn btn-outline-primary text-uppercase">Upload BPMN File</button> 
+	        	<p:commandLink id="uploadOldFile" styleClass="btn btn-outline-primary text-uppercase"> 
+	        		<i class="fa fa-upload" aria-hidden="true"></i>
+	        		<h:outputText value=" Upload File"/>
+	        	</p:commandLink>
 	        </p:outputPanel>
 	        
 	      </div>
@@ -52,17 +53,18 @@
 	      <div class="card-body">
 	      
 	        <p:outputPanel rendered="#{main.updatedfile ne ''}"> 
-	        	<h5 class="card-title mb-0 d-flex justify-content-between">
+	        	<h5 class="card-title mb-0 d-flex justify-content-between align-itens--center">
 	        		<span><b>Updated BPMN File:</b> <span>#{main.updatedfile}</span></span>
-	        		<spa>
-	        			<p:commandLink styleClass="text-uppercase ml-3" value="View "> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
-	        		</spa>
+	        		<p:commandLink styleClass="text-uppercase ml-3 min-width--110 text-right" value="View " disabled="true"> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
 	        	</h5>
 	        </p:outputPanel>
 	        <p:outputPanel rendered="#{main.updatedfile eq ''}">
 	        	<h5 class="card-title">Upload BPMN Updated Version File</h5>
 	        	<p class="card-text">Use the button bellow to upload an updated version of BPMN file</p>
-	        	<button class="btn btn-outline-primary text-uppercase">Upload BPMN File</button>
+	        	<p:commandLink id="uploadUpdatedFile" styleClass="btn btn-outline-primary text-uppercase"> 
+	        		<i class="fa fa-upload" aria-hidden="true"></i>
+	        		<h:outputText value=" Upload File"/>
+	        	</p:commandLink>
 	        </p:outputPanel>
 	        
 	      </div>
@@ -70,32 +72,32 @@
 	  </div>
   </div>
   
-  <p:outputPanel>
-  
-	  <div class="row mt-50">
-		<div class="col-12">
-			<h4 class="text-uppercase">Previous Analysis </h4>
-		</div>
-	  </div>
+	  <p:outputPanel>
 	  
-	  <div class="row">
-	  	<div class="col-12">
-	  		<table class="table table-hover">
-			  <thead class="thead-light">
-			    <tr>
-			      <th scope="col">#</th>
-			      <th scope="col" class="text-uppercase align-middle">Old Model</th>
-			      <th scope="col" class="text-uppercase align-middle">Updated Model</th>
-			      <th scope="col" class="text-uppercase text-center align-middle" width="150px">Actions</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			    
-			  </tbody>
-			</table>
-	  	</div>
-	  </div>
-	  
-  </p:outputPanel>
+		  <div class="row mt-50">
+			<div class="col-12">
+				<h4 class="text-uppercase">Previous Analysis </h4>
+			</div>
+		  </div>
+		  
+		  <div class="row">
+		  	<div class="col-12">
+		  		<table class="table table-hover">
+				  <thead class="thead-light">
+				    <tr>
+				      <th scope="col">#</th>
+				      <th scope="col" class="text-uppercase align-middle">Old Model</th>
+				      <th scope="col" class="text-uppercase align-middle">Updated Model</th>
+				      <th scope="col" class="text-uppercase text-center align-middle" width="150px">Actions</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    
+				  </tbody>
+				</table>
+		  	</div>
+		  </div>
+		  
+	  </p:outputPanel>
   
 </div>

@@ -17,16 +17,27 @@ public class RemovedActivitiesPattern extends ChangePattern{
 	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
 	public RemovedActivitiesPattern() {
+		
 		this.removedElements = new ArrayList<ModelElementInstance>();
+		
+		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
 	}
 	
 	public RemovedActivitiesPattern(Collection< ModelElementInstance> activityElement1, Collection< ModelElementInstance> activityElements2) {
+		
 		this.removedElements = new ArrayList<ModelElementInstance>();
+		
 		this.modelElementsOld = activityElement1;
+		
 		this.modelElementsUpdated = activityElements2;
+		
 		this.equivalentMapElements = new HashMap<String, ModelElementInstance>();
+		
 		this.executionTime = 0L;
+		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
 	}
 	
 	public Collection<ModelElementInstance> getRemovedElements() {
@@ -46,7 +57,9 @@ public class RemovedActivitiesPattern extends ChangePattern{
 	}
 	
 	public void execute() {
+		
 		setRemovedElements(new ArrayList<ModelElementInstance>());
+		
 		Instant startMoment = Instant.now();
 		
 		for (ModelElementInstance element:getModelElementsOld()) {
@@ -59,22 +72,31 @@ public class RemovedActivitiesPattern extends ChangePattern{
 		}
 		
 		setExecutionTime(calculateExecutionTime(startMoment));
+		
 	}
 	
-	public void calculateDirectedInpactedActivities() {
+	public void calculateInpactedActivities() {
+		
 		for (ModelElementInstance element:removedElements) {
 			
 			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsOld());
 			
 			for(String targetId: targetActivities) {
-				ModelElementInstance targetElement = CIABpmnUtil.getElement(targetId, getModelElementsOld());
-				if(targetElement != null && !CIABpmnUtil.elementExist(targetElement, removedElements) ) {
+				
+				ModelElementInstance targetElement = CIABpmnUtil.getElement( targetId, getModelElementsOld() );
+				
+				if(targetElement != null && !CIABpmnUtil.elementExist( targetElement, removedElements ) ) {
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Removed Activity", targetElement.getAttributeValue("name"));
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( element.getAttributeValue("name"), "Removed Activity", targetElement.getAttributeValue("name") );
 					
-					bpmnReportModels.add(bpmnReportModel);
+					bpmnReportModels.add( bpmnReportModel );
 				}
 			}
+			
+			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsOld()));
+			
+			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), "Removed Activity" ) );
+			
 		}
 	}
 }

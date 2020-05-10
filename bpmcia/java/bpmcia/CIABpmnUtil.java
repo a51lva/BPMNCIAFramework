@@ -9,8 +9,11 @@ import java.util.Optional;
 
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.Activity;
+import org.camunda.bpm.model.bpmn.instance.DataInputAssociation;
+import org.camunda.bpm.model.bpmn.instance.DataOutputAssociation;
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
 import org.camunda.bpm.model.bpmn.instance.Gateway;
+import org.camunda.bpm.model.bpmn.instance.ItemAwareElement;
 import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.camunda.bpm.model.xml.type.ModelElementType;
@@ -62,7 +65,6 @@ public class CIABpmnUtil {
 		Collection<SequenceFlow> outgoings = node.getOutgoing();
 		
 		Collection<String> result = new ArrayList<String>();
-		
 				
 		for (SequenceFlow sf:outgoings) {
 			
@@ -73,6 +75,38 @@ public class CIABpmnUtil {
 			}else {						
 				return getTargetsElementId((ModelElementInstance)sf.getTarget(), activities);
 			}
+		}
+		
+		return result;
+	}
+	
+	public static final Collection<String> getDataAssociationElements( ModelElementInstance element, Collection<Activity> activities ) {		
+		
+		Activity activity = (Activity)element;
+		
+		Collection<DataOutputAssociation> dataOutputAssociations = activity.getDataOutputAssociations();	
+		
+		Collection<String> result = new ArrayList<String>();
+				
+		for (DataOutputAssociation doa:dataOutputAssociations) {
+			
+			for(Activity at: activities) {
+				
+				Collection<DataInputAssociation> dataInputAssociations = at.getDataInputAssociations();
+				
+				for(DataInputAssociation dia: dataInputAssociations ) {
+					
+					for(ItemAwareElement itn: dia.getSources()) {
+						
+						if( doa.getTarget().getId().equalsIgnoreCase(itn.getId())) {
+							
+							result.add(at.getAttributeValue("id"));
+							
+						}
+					}
+				}
+			}
+			
 		}
 		
 		return result;
@@ -109,6 +143,19 @@ public class CIABpmnUtil {
 		if(gateways != null) {
 			for(ModelElementInstance gateway: gateways){
 				result.add((Gateway)gateway);
+			}
+		}
+		
+		return result;
+	}
+	
+	public static final Collection<Activity> convertToCollectionActvity(Collection< ModelElementInstance> activities){
+		
+		Collection<Activity> result = new ArrayList<Activity>();
+		
+		if(activities != null) {
+			for(ModelElementInstance gateway: activities){
+				result.add((Activity)gateway);
 			}
 		}
 		

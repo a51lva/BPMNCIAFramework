@@ -2,12 +2,12 @@ package bpmcia;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 
 import patterncatalog.ControlFlowDifferentDependenciesPattern;
 import patterncatalog.InsertedActivitiesPattern;
+import patterncatalog.InterchangedActivitiesPattern;
 import patterncatalog.RemovedActivitiesPattern;
 
 public class CIACalculation {
@@ -17,11 +17,14 @@ public class CIACalculation {
 	private RemovedActivitiesPattern removedActivitiesPattern;
 	private InsertedActivitiesPattern insertedActivitiesPattern;
 	private ControlFlowDifferentDependenciesPattern controlFlowDifferencePattern;
+	private InterchangedActivitiesPattern interchangedActivitiesPattern;
 	
 	
 	private Collection< ModelElementInstance> removedActivities;
 	private Collection< ModelElementInstance> insertedActivities;
 	private Collection< ModelElementInstance> incomeSequenceFlowChangedActivities;
+	private Collection< ModelElementInstance> interchangedActivities;
+	
 	
 	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
@@ -45,6 +48,10 @@ public class CIACalculation {
 																						CIABpmnUtil.convertToCollectionGateway(CIABpmnUtil.getGatewayElements(this.oldModel.getModelInstance())), 
 																						CIABpmnUtil.convertToCollectionGateway(CIABpmnUtil.getGatewayElements(this.updatedModel.getModelInstance()))
 																						);
+		this.interchangedActivitiesPattern = new InterchangedActivitiesPattern(
+																				CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
+																				CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
+																			  );
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 	}
@@ -89,6 +96,14 @@ public class CIACalculation {
 		this.controlFlowDifferencePattern = controlFlowDifferencePattern;
 	}
 	
+	public InterchangedActivitiesPattern getInterchangedActivitiesPattern() {
+		return interchangedActivitiesPattern;
+	}
+	
+	public void setInterchangedActivitiesPattern(InterchangedActivitiesPattern interchangedActivitiesPattern) {
+		this.interchangedActivitiesPattern = interchangedActivitiesPattern;
+	}
+	
 	public Collection<ModelElementInstance> getRemovedActivities() {
 		return removedActivities;
 	}
@@ -114,6 +129,14 @@ public class CIACalculation {
 		this.incomeSequenceFlowChangedActivities = incomeSequenceFlowChangedActivities;
 	}
 	
+	public Collection<ModelElementInstance> getInterchangedActivities() {
+		return interchangedActivities;
+	}
+	
+	public void setInterchangedActivities(Collection<ModelElementInstance> interchangedActivities) {
+		this.interchangedActivities = interchangedActivities;
+	}
+	
 	public Collection<CIABpmnReportModel> getBpmnReportModels() {
 		return bpmnReportModels;
 	}
@@ -126,21 +149,25 @@ public class CIACalculation {
 		removedActivitiesPattern.execute();
 		insertedActivitiesPattern.execute();
 		controlFlowDifferencePattern.execute();
+		interchangedActivitiesPattern.execute();
 		
 		setRemovedActivities(removedActivitiesPattern.getRemovedElements());
 		setInsertedActivities(insertedActivitiesPattern.getInsertedElements());
 		setIncomeSequenceFlowChangedActivities(controlFlowDifferencePattern.getChangedElements());
+		setInterchangedActivities(interchangedActivitiesPattern.getInterchangedElements());
 		
-		calculateDirectedInpactedActivities();
+		calculateInpactedActivities();
 	}
 	
-	private void calculateDirectedInpactedActivities() {
-		removedActivitiesPattern.calculateDirectedInpactedActivities();
-		insertedActivitiesPattern.calculateDirectedInpactedActivities();
-		controlFlowDifferencePattern.calculateDirectedInpactedActivities();
+	private void calculateInpactedActivities() {
+		removedActivitiesPattern.calculateInpactedActivities();
+		insertedActivitiesPattern.calculateInpactedActivities();
+		controlFlowDifferencePattern.calculateInpactedActivities();
+		interchangedActivitiesPattern.calculateInpactedActivities();
 		
 		getBpmnReportModels().addAll(insertedActivitiesPattern.getBpmnReportModels());
 		getBpmnReportModels().addAll(removedActivitiesPattern.getBpmnReportModels());
 		getBpmnReportModels().addAll(controlFlowDifferencePattern.getBpmnReportModels());
+		getBpmnReportModels().addAll(interchangedActivitiesPattern.getBpmnReportModels());
 	}
 }

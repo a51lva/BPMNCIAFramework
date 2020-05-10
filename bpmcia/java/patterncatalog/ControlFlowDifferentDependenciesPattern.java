@@ -18,16 +18,29 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 	
 	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
-	public ControlFlowDifferentDependenciesPattern() {}
+	public ControlFlowDifferentDependenciesPattern() {
+		
+		this.changedElements = new ArrayList<ModelElementInstance>();
+		
+		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+	}
 	
 	public ControlFlowDifferentDependenciesPattern(Collection< ModelElementInstance> activityElementsOld, Collection< ModelElementInstance> activityElementsUpdated, Collection<Gateway> gatewayElementsOld, Collection<Gateway> gatewayElementsUpdated) {
+		
 		this.changedElements = new ArrayList<ModelElementInstance>();
+		
 		this.modelElementsOld = activityElementsOld;
+		
 		this.modelElementsUpdated = activityElementsUpdated;
+		
 		this.equivalentMapElements = new HashMap<String, ModelElementInstance>();
+		
 		this.executionTime = 0L;
+		
 		this.gatewayElementsOld = gatewayElementsOld;
+		
 		this.gatewayElementsUpdated = gatewayElementsUpdated;
+		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 	}
 	
@@ -94,11 +107,12 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 		}
 		
 		setExecutionTime(calculateExecutionTime(startMoment));
+		
 	}
 
-	public void calculateDirectedInpactedActivities() {
+	public void calculateInpactedActivities() {
 		
-		for (ModelElementInstance element:changedElements) {	
+		for ( ModelElementInstance element: changedElements ) {	
 			
 			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsUpdated());
 			
@@ -122,6 +136,11 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 					}	
 				}
 			}
+			
+			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated()));
+			
+			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), "ControlFlow Different Dependency" ) );
+			
 		}
 	}
 }

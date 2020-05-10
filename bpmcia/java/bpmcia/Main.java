@@ -1,6 +1,5 @@
 package bpmcia;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,12 +14,8 @@ import org.primefaces.shaded.json.JSONArray;
 
 @ManagedBean
 @SessionScoped
-public class Main implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3448897286963137041L;
-	
+public class Main{
+		
 	private String appname;
 	private String firstfile, updatedfile;
 	private Collection< ModelElementInstance> elementsOldModel;
@@ -50,7 +45,7 @@ public class Main implements Serializable{
 			
 			sidebarMenu = new SidemenuManagement("dashboard");
 			
-			String fileNameOld = "shipModel.bpmn", fileNameUpdated = "shipModel2.bpmn";
+			String fileNameOld = "Under-warranty-after-sales-service-business-process-model.bpmn", fileNameUpdated = "Under-warranty-after-sales-service-business-process-model2.bpmn";
 			
 			setFirstfile(fileNameOld);
 			
@@ -206,7 +201,6 @@ public class Main implements Serializable{
 	}
 	
 	public void changesExecute() {
-		setCanExecute(false);
 		
 		ciaCalculation.execute();
 		
@@ -224,8 +218,7 @@ public class Main implements Serializable{
 			int reports = getBpmnReportModels().size();
 			int oldmodels = CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()).size();
 			double div = (double) reports / oldmodels;
-			changedActivitiesPercentage = (int)(div*100);
-		 
+			changedActivitiesPercentage = (int)(div*100);		 
 		}
 		
 		notChangedActivities = 100 - changedActivitiesPercentage;

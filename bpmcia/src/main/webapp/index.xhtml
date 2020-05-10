@@ -31,6 +31,10 @@
 								<ui:include src="components/home.xhtml"></ui:include>
 							</p:outputPanel>
 							
+							<p:outputPanel rendered="#{(main.getSidebarMenu().getSelectedMenu() eq 'traceability')}">
+								<ui:include src="components/traceability.xhtml"></ui:include>
+							</p:outputPanel>
+							
 							<p:outputPanel rendered="#{(main.getSidebarMenu().getSelectedMenu() eq 'result')}">
 								<ui:include src="components/result.xhtml"></ui:include>
 							</p:outputPanel>

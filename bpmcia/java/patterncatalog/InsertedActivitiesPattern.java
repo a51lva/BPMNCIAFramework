@@ -16,16 +16,27 @@ public class InsertedActivitiesPattern extends ChangePattern{
 	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
 	public InsertedActivitiesPattern() {
-		this.insertedElements = null;
+		
+		this.insertedElements = new ArrayList<ModelElementInstance>();
+		
+		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
 	}
 	
 	public InsertedActivitiesPattern(Collection< ModelElementInstance> activityElements1, Collection< ModelElementInstance> activityElements2) {
+		
 		this.insertedElements = new ArrayList<ModelElementInstance>();
+		
 		this.modelElementsOld = activityElements1;
+		
 		this.modelElementsUpdated = activityElements2;
+		
 		this.equivalentMapElements = new HashMap<String, ModelElementInstance>();
+		
 		this.executionTime = 0L;
+		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
 	}
 	
 	public Collection<ModelElementInstance> getInsertedElements() {
@@ -45,34 +56,47 @@ public class InsertedActivitiesPattern extends ChangePattern{
 	}
 	
 	public void execute() {
-		setInsertedElements(new ArrayList<ModelElementInstance>());
+		
+		setInsertedElements( new ArrayList<ModelElementInstance>() );
+		
 		Instant startMoment = Instant.now();
 		
-		for (ModelElementInstance element:getModelElementsUpdated()) {
+		for ( ModelElementInstance element: getModelElementsUpdated() ) {
 			
-			ModelElementInstance equivalentElement = (getEquivalentElement(element)!=null)?getEquivalentElement(element):element;
+			ModelElementInstance equivalentElement = ( getEquivalentElement( element ) != null ) ? getEquivalentElement( element ) : element;
 
-			if(!CIABpmnUtil.elementExist(equivalentElement, getModelElementsOld())) {
+			if( !CIABpmnUtil.elementExist( equivalentElement, getModelElementsOld() ) ) {
+				
 				insertedElements.add(equivalentElement);
+				
 			}
 		}
 		
-		setExecutionTime(calculateExecutionTime(startMoment));
+		setExecutionTime( calculateExecutionTime( startMoment ) );
 	}
 	
-	public void calculateDirectedInpactedActivities() {
-		for (ModelElementInstance element:insertedElements) {	
+	public void calculateInpactedActivities() {
+		
+		for ( ModelElementInstance element: insertedElements ) {	
 			
 			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsUpdated());
 			
-			for(String targetId: targetActivities) {
+			for( String targetId: targetActivities ) {
+				
 				ModelElementInstance targetElement = CIABpmnUtil.getElement(targetId, getModelElementsUpdated());
-				if(targetElement != null ) {
+				
+				if( targetElement != null ) {
+					
 					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Inserted Activity", targetElement.getAttributeValue("name"));
 				
 					bpmnReportModels.add(bpmnReportModel);
 				}
 			}
+			
+			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated()));
+			
+			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), "Inserted Activity" ) );
+			
 		}
 	}
 }

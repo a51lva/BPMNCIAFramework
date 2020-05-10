@@ -10,6 +10,9 @@ import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
+import bpmcia.CIABpmnReportModel;
+import bpmcia.CIABpmnUtil;
+
 public abstract class ChangePattern{
 	
 	Collection< ModelElementInstance> modelElementsOld;
@@ -83,5 +86,24 @@ public abstract class ChangePattern{
 		String elementId = element.getAttributeValue("id");
 		
 		return getEquivalentMapElements().get(elementId);
+	}
+	
+	public Collection<CIABpmnReportModel> validateDataAssociationElements(Collection<String> dataAssociationIDs, ModelElementInstance element, Collection<ModelElementInstance> modelElements, String changeType){
+		
+		Collection<CIABpmnReportModel> bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		for(String targetId: dataAssociationIDs) {
+			
+			ModelElementInstance targetElement = CIABpmnUtil.getElement(targetId, modelElements);
+			
+			if( targetElement != null ) {
+				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), changeType, targetElement.getAttributeValue("name"));
+				
+				bpmnReportModels.add(bpmnReportModel);
+			}
+		}
+		
+		return bpmnReportModels;
 	}
 }
