@@ -172,6 +172,10 @@
     border-color: #3c7d88;
 }
 
+.dropdown-item{
+	cursor:pointer
+}
+
 .min-width--110 {
     min-width: 110px;
 }

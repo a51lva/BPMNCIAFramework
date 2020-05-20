@@ -21,9 +21,7 @@ public class Main{
 	private Collection< ModelElementInstance> elementsOldModel;
 	private Collection< ModelElementInstance> elementsUpdatedModel;
 	
-	private Collection< ModelElementInstance> removedActivities;
-	private Collection< ModelElementInstance> insertedActivities;
-	private Collection< ModelElementInstance> incomeSequenceFlowChangedActivities;
+	private Collection< ModelElementInstance> changedElements;
 	
 	private CIACalculation ciaCalculation;
 	private CIABpmnModelInstance oldModel, updatedModel;
@@ -37,6 +35,8 @@ public class Main{
 	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
 	private SidemenuManagement sidebarMenu;
+	
+	private Integer ciaSteps = 1;
 	
 	
 	@PostConstruct
@@ -59,6 +59,8 @@ public class Main{
 			ciaCalculation = new CIACalculation(oldModel, updatedModel);
 			
 			bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+			
+			changedElements = new ArrayList<ModelElementInstance>();
 			
 			setCanExecute(true);
 			
@@ -95,22 +97,6 @@ public class Main{
 		this.updatedfile = updatedfile;
 	}
 	
-	public Collection<ModelElementInstance> getInsertedActivities() {
-		return insertedActivities;
-	}
-	
-	public void setInsertedActivities(Collection<ModelElementInstance> insertedActivities) {
-		this.insertedActivities = insertedActivities;
-	}
-	
-	public Collection<ModelElementInstance> getRemovedActivities() {
-		return removedActivities;
-	}
-	
-	public void setRemovedActivities(Collection<ModelElementInstance> removedActivities) {
-		this.removedActivities = removedActivities;
-	}
-	
 	public Boolean getCanExecute() {
 		return canExecute;
 	}
@@ -119,15 +105,14 @@ public class Main{
 		this.canExecute = canExecute;
 	}
 	
-	public Collection<ModelElementInstance> getIncomeSequenceFlowChangedActivities() {
-		return incomeSequenceFlowChangedActivities;
+	public Collection<ModelElementInstance> getChangedElements() {
+		return changedElements;
 	}
-	
-	public void setIncomeSequenceFlowChangedActivities(
-			Collection<ModelElementInstance> incomeSequenceFlowChangedActivities) {
-		this.incomeSequenceFlowChangedActivities = incomeSequenceFlowChangedActivities;
+
+	public void setChangedElements(Collection<ModelElementInstance> changedElements) {
+		this.changedElements = changedElements;
 	}
-	
+
 	public Collection<ModelElementInstance> getElementsOldModel() {
 		return elementsOldModel;
 	}
@@ -200,13 +185,21 @@ public class Main{
 		this.sidebarMenu = sidebarMenu;
 	}
 	
+	public Integer getCiaSteps() {
+		return ciaSteps;
+	}
+
+	public void setCiaSteps(Integer ciaSteps) {
+		this.ciaSteps = ciaSteps;
+	}
+
 	public void changesExecute() {
+		
+		clearLists();
 		
 		ciaCalculation.execute();
 		
-		setRemovedActivities(ciaCalculation.getRemovedActivities());
-		setInsertedActivities(ciaCalculation.getInsertedActivities());
-		setIncomeSequenceFlowChangedActivities(ciaCalculation.getIncomeSequenceFlowChangedActivities());
+		setChangedElements(ciaCalculation.getChangedElements());
 		
 		setBpmnReportModels(ciaCalculation.getBpmnReportModels());
 		
@@ -215,21 +208,29 @@ public class Main{
 		int changedActivitiesPercentage = 0, notChangedActivities = 0;
 		
 		if(getElementsOldModel().size() > 0) {
-			int reports = getBpmnReportModels().size();
+			
+			int reports = getChangedElements().size();
+			
 			int oldmodels = CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()).size();
+			
 			double div = (double) reports / oldmodels;
-			changedActivitiesPercentage = (int)(div*100);		 
+			
+			changedActivitiesPercentage = (int)( div * 100 );
+			
 		}
 		
 		notChangedActivities = 100 - changedActivitiesPercentage;
 		
 		piechartArray.add("Unchanged Activities");
+		
 		piechartArray.add(notChangedActivities);
 		
 		pieChart.put(piechartArray);
 		
 		piechartArray = new ArrayList<Object>();
+		
 		piechartArray.add("Changed Activities");
+		
 		piechartArray.add(changedActivitiesPercentage);
 		
 		pieChart.put(piechartArray);
@@ -249,7 +250,8 @@ public class Main{
 				columnCategories.put(elementTypeName);
 				
 				oldData.put( oldModel.getModelInstance().getModelElementsByType(elementType).size() );
-				updatedData.put( updatedModel.getModelInstance().getModelElementsByType(elementType).size() );
+				
+				updatedData.put( updatedModel.getModelInstance().getModelElementsByType(elementType).size() );				
 			}
 		});
 		
@@ -275,9 +277,28 @@ public class Main{
 	}
 
 	public void clear() {
+		
 		firstfile = "";
+		
 		updatedfile = "";
+		
 		setCanExecute(false);
+		
+		clearLists();
+	}
+	
+	private void clearLists() {
+		
 		bpmnReportModels.clear();
+		
+		changedElements.clear();
+		
+		oldData = new JSONArray();
+		
+		updatedData = new JSONArray();
+		
+		columnCategories = new JSONArray();
+		
+		pieChart = new JSONArray();
 	}
 }

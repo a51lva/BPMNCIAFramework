@@ -72,32 +72,86 @@
 	  </div>
   </div>
   
-	  <p:outputPanel>
+
+	<div class="row mt-50">
+		<div class="col-12 d-flex justify-content-between align-itens--center">
+			<h4 class="text-uppercase mb-0">Impact Calculation Rules</h4>
+		</div>
+	</div>
+	
+	<div class="row mt-2">
+		  <div class="col-sm-12 ">
+		  		<div class="checkbox">
+		             <label style="font-size: 1.5em" class="d-flex">
+		                <input type="checkbox" value="" checked="true"/>
+		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+		                <span> Change Impact Analysis by Changing Activities</span>
+		            </label>
+		        </div>
+		  		<div class="d-flex">
+			  		<div class="checkbox">
+			             <label style="font-size: 1.5em" class="d-flex">
+			                <input type="checkbox" value="" checked="true"/>
+			                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+			                <span> Change Impact Analysis in</span>
+			            </label>
+			        </div>
+			        
+			        <h:panelGroup>
+				        <div class="dropdown ml-3">
+						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 160px;">
+						    #{main.getCiaSteps()} #{(main.getCiaSteps() > 1)?"Steps":"Step"}
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						    <h:outputText styleClass="dropdown-item" value="N Steps" />
+						    <h:outputText styleClass="dropdown-item" value="1 Step"/>
+						    <h:outputText styleClass="dropdown-item" value="2 Steps"/>
+						    <h:outputText styleClass="dropdown-item" value="3 Steps"/>
+						  </div>
+						</div>	
+					</h:panelGroup>	        
+		        </div>
+		        <div class="checkbox">
+		             <label style="font-size: 1.5em">
+		                <input type="checkbox" value="" checked="true"/>
+		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+		                Change Impact Analysis via  Artifact Association
+		            </label>
+		        </div>
+		  		<div class="checkbox">
+		             <label style="font-size: 1.5em">
+		                <input type="checkbox" value=""/>
+		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+		                Change Impact Analysis by Gateways and Artifacts.
+		            </label>
+		        </div>
+				
+		  </div>
+	 </div>
+  
 	  
-		  <div class="row mt-50">
-			<div class="col-12">
-				<h4 class="text-uppercase">Previous Analysis </h4>
-			</div>
-		  </div>
-		  
-		  <div class="row">
-		  	<div class="col-12">
-		  		<table class="table table-hover">
-				  <thead class="thead-light">
-				    <tr>
-				      <th scope="col">#</th>
-				      <th scope="col" class="text-uppercase align-middle">Old Model</th>
-				      <th scope="col" class="text-uppercase align-middle">Updated Model</th>
-				      <th scope="col" class="text-uppercase text-center align-middle" width="150px">Actions</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				    
-				  </tbody>
-				</table>
-		  	</div>
-		  </div>
-		  
-	  </p:outputPanel>
+	<div class="row mt-50">
+		<div class="col-12">
+			<h4 class="text-uppercase">Previous Analysis </h4>
+		</div>
+	</div>
+	  
+	<div class="row">
+	  	<div class="col-12">
+	  		<table class="table table-hover">
+			  <thead class="thead-light">
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col" class="text-uppercase align-middle">Old Model</th>
+			      <th scope="col" class="text-uppercase align-middle">Updated Model</th>
+			      <th scope="col" class="text-uppercase text-center align-middle" width="150px">Actions</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    
+			  </tbody>
+			</table>
+	  	</div>
+	</div>
   
 </div>

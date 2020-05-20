@@ -91,17 +91,24 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 			if(equivalentActivityElement2 != null) {
 				
 				Collection<String> dependenciesActivity = CIABpmnUtil.getDependenciesElementId(equivalentActivityElement, getGatewayElementsOld());
+				
 				Collection<String> dependenciesActivity2 = CIABpmnUtil.getDependenciesElementId(equivalentActivityElement2, getGatewayElementsUpdated());
 				
 				if(dependenciesActivity.size() == dependenciesActivity2.size()) {
+					
 					for(String id: dependenciesActivity) {
-						if(!dependenciesActivity2.stream().anyMatch(id2 -> id2.equalsIgnoreCase(id))) {						
+						
+						if(!dependenciesActivity2.stream().anyMatch(id2 -> id2.equalsIgnoreCase(id))) {		
+							
 							changedElements.add(equivalentActivityElement);
+							
 							break;
 						}
 					}
 				}else {
+					
 					changedElements.add(equivalentActivityElement);
+					
 				}
 			}
 		}

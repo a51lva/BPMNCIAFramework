@@ -14,7 +14,7 @@ function pieChart(container, dataArray ){
 	    	enabled:false
 	    },
 	    title: {
-	        text: 'Changed and Unchanged<br>Activities Percentages',
+	        text: 'Changed and Unchanged<br>Activities Percentage',
 	        align: 'center',
 	        verticalAlign: 'middle',
 	    },
