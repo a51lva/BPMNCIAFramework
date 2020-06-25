@@ -125,7 +125,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 			
 			if(targetActivities.size() == 0) {
 		
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "ControlFlow Different Dependency", "There are no directed Inpacted Activity by changing "+element.getAttributeValue("name"));
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", "ControlFlow Different Dependency", "There are no directed Inpacted Activity by changing "+element.getAttributeValue("name"));
 				
 				bpmnReportModels.add(bpmnReportModel);
 			
@@ -137,7 +137,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 					
 					if(targetElement != null ) {
 						
-						CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "ControlFlow Different Dependency", targetElement.getAttributeValue("name"));
+						CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", "ControlFlow Different Dependency", targetElement.getAttributeValue("name"));
 						
 						bpmnReportModels.add(bpmnReportModel);
 					}	

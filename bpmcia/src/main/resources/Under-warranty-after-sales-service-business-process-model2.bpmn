@@ -28,9 +28,6 @@
     </bpmn:laneSet>
     <bpmn:task id="Activity_1avd16b" name="Verify service job (preliminary)">
       <bpmn:outgoing>Flow_1luz03r</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_1yho97z">
-        <bpmn:targetRef>DataObjectReference_06kc76e</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
     </bpmn:task>
     <bpmn:exclusiveGateway id="Gateway_00tryim" name="Approve service job?">
       <bpmn:incoming>Flow_1luz03r</bpmn:incoming>
@@ -47,9 +44,6 @@
     <bpmn:task id="Activity_1igjp3e" name="Verify service job (final) and call customer to verify and record data">
       <bpmn:incoming>Flow_1gnwr9o</bpmn:incoming>
       <bpmn:outgoing>Flow_0u2ln62</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_03q7e32">
-        <bpmn:targetRef>DataObjectReference_06kc76e</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
     </bpmn:task>
     <bpmn:exclusiveGateway id="Gateway_13f28x4" name="Approve service job?">
       <bpmn:incoming>Flow_0u2ln62</bpmn:incoming>
@@ -79,8 +73,6 @@
     <bpmn:sequenceFlow id="Flow_08dz5uu" name="Yes" sourceRef="Gateway_13f28x4" targetRef="Activity_17mewuj" />
     <bpmn:sequenceFlow id="Flow_1xuz99z" sourceRef="Activity_17mewuj" targetRef="Event_0640fqo" />
     <bpmn:sequenceFlow id="Flow_1f5dc87" sourceRef="Activity_0qsvztq" targetRef="Event_19pf702" />
-    <bpmn:dataObjectReference id="DataObjectReference_06kc76e" name="Service Job&#10;[Verification]" dataObjectRef="DataObject_07dn7x3" />
-    <bpmn:dataObject id="DataObject_07dn7x3" />
   </bpmn:process>
   <bpmn:process id="Process_1s90eyx" isExecutable="false">
     <bpmn:laneSet id="LaneSet_07ss9fq" />
@@ -287,12 +279,6 @@
       <bpmndi:BPMNShape id="Event_19pf702_di" bpmnElement="Event_19pf702">
         <dc:Bounds x="1602" y="222" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataObjectReference_06kc76e_di" bpmnElement="DataObjectReference_06kc76e">
-        <dc:Bounds x="862" y="355" width="36" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="850" y="412" width="60" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Participant_1xhox6g_di" bpmnElement="Participant_1xhox6g" isHorizontal="true">
         <dc:Bounds x="129" y="740" width="1821" height="370" />
       </bpmndi:BPMNShape>
@@ -430,16 +416,6 @@
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="172" y="1282" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_1yho97z_di" bpmnElement="DataOutputAssociation_1yho97z">
-        <di:waypoint x="1000" y="440" />
-        <di:waypoint x="1000" y="375" />
-        <di:waypoint x="898" y="375" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_03q7e32_di" bpmnElement="DataOutputAssociation_03q7e32">
-        <di:waypoint x="1180" y="240" />
-        <di:waypoint x="882" y="240" />
-        <di:waypoint x="882" y="355" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0wbs2pr_di" bpmnElement="DataOutputAssociation_0wbs2pr">
         <di:waypoint x="280" y="880" />
         <di:waypoint x="280" y="830" />

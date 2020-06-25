@@ -45,7 +45,8 @@
 					  <thead class="thead-light">
 					    <tr>
 					      <th scope="col" width="50px">#</th>
-					      <th scope="col" width="300px" class="text-uppercase align-middle">Changed Activity</th>
+					      <th scope="col" width="300px" class="text-uppercase align-middle">Changed Element</th>
+					      <th scope="col" width="300px" class="text-uppercase align-middle">Element Type</th>
 					      <th scope="col" class="text-uppercase align-middle">Change Pattern</th>
 					      <th scope="col" class="text-uppercase align-middle">Impacted Activity</th>
 					    </tr>
@@ -54,7 +55,8 @@
 					  	<ui:repeat var="reportModels" value="#{main.getBpmnReportModels()}" varStatus="status">
 						    <tr>
 						      <th scope="row" class="align-middle">#{status.index + 1}</th>
-						      <td class="align-middle">#{reportModels.getChangedActivity()}</td>
+						      <td class="align-middle">#{reportModels.getChangedElement()}</td>
+						       <td class="align-middle">#{reportModels.getElementType()}</td>
 						      <td class="align-middle">#{reportModels.getChangePattern()}</td>
 						      <td class="align-middle">#{reportModels.getInpactedActivity()}</td>
 						    </tr>

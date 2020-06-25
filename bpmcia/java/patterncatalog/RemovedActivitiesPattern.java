@@ -87,7 +87,7 @@ public class RemovedActivitiesPattern extends ChangePattern{
 				
 				if(targetElement != null && !CIABpmnUtil.elementExist( targetElement, removedElements ) ) {
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( element.getAttributeValue("name"), "Removed Activity", targetElement.getAttributeValue("name") );
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( element.getAttributeValue("name"), "Activity", "Removed Activity", targetElement.getAttributeValue("name") );
 					
 					bpmnReportModels.add( bpmnReportModel );
 				}

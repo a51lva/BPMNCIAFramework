@@ -87,7 +87,7 @@ public class InsertedActivitiesPattern extends ChangePattern{
 				
 				if( targetElement != null ) {
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Inserted Activity", targetElement.getAttributeValue("name"));
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", "Inserted Activity", targetElement.getAttributeValue("name"));
 				
 					bpmnReportModels.add(bpmnReportModel);
 				}

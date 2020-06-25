@@ -98,7 +98,7 @@ public abstract class ChangePattern{
 			
 			if( targetElement != null ) {
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), changeType, targetElement.getAttributeValue("name"));
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", changeType, targetElement.getAttributeValue("name"));
 				
 				bpmnReportModels.add(bpmnReportModel);
 			}

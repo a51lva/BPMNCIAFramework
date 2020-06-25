@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 
+import patterncatalog.ArtitactChanges;
 import patterncatalog.ControlFlowDifferentDependenciesPattern;
 import patterncatalog.GatewayChanges;
 import patterncatalog.InsertedActivitiesPattern;
@@ -20,6 +21,7 @@ public class CIACalculation {
 	private ControlFlowDifferentDependenciesPattern controlFlowDifferencePattern;
 	private InterchangedActivitiesPattern interchangedActivitiesPattern;
 	private GatewayChanges gatewayChanges;	
+	private ArtitactChanges artitactChanges;
 	
 	private Collection< ModelElementInstance> changedElements;	
 	
@@ -51,12 +53,20 @@ public class CIACalculation {
 																				CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
 																				CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
 																			  );
+		
 		this.gatewayChanges = new GatewayChanges(
 													CIABpmnUtil.getGatewayElements(this.oldModel.getModelInstance()), 
 													CIABpmnUtil.getGatewayElements(this.updatedModel.getModelInstance()), 
 													CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
 													CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
 												);
+		
+		this.artitactChanges = new ArtitactChanges(
+													CIABpmnUtil.getDataObjectReferenceElements(this.oldModel.getModelInstance()), 
+													CIABpmnUtil.getDataObjectReferenceElements(this.updatedModel.getModelInstance()), 
+													CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
+													CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
+												  );
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 	}
@@ -109,6 +119,14 @@ public class CIACalculation {
 		return gatewayChanges;
 	}
 
+	public ArtitactChanges getArtitactChanges() {
+		return artitactChanges;
+	}
+
+	public void setArtitactChanges(ArtitactChanges artitactChanges) {
+		this.artitactChanges = artitactChanges;
+	}
+
 	public void setGatewayChanges(GatewayChanges gatewayChanges) {
 		this.gatewayChanges = gatewayChanges;
 	}
@@ -134,11 +152,18 @@ public class CIACalculation {
 	}
 	
 	public void execute() {
+		
 		removedActivitiesPattern.execute();
+		
 		insertedActivitiesPattern.execute();
+		
 		controlFlowDifferencePattern.execute();
+		
 		interchangedActivitiesPattern.execute();
+		
 		gatewayChanges.execute();
+		
+		artitactChanges.execute();
 		
 		setChangedElements(removedActivitiesPattern.getRemovedElements());
 		setChangedElements(insertedActivitiesPattern.getInsertedElements());
@@ -146,12 +171,17 @@ public class CIACalculation {
 		setChangedElements(interchangedActivitiesPattern.getInterchangedElements());
 		
 		calculateInpactedActivities();
+		
 	}
 	
 	private void calculateInpactedActivities() {
+		
 		removedActivitiesPattern.calculateInpactedActivities();
+		
 		insertedActivitiesPattern.calculateInpactedActivities();
+		
 		controlFlowDifferencePattern.calculateInpactedActivities();
+		
 		interchangedActivitiesPattern.calculateInpactedActivities();
 		
 		getBpmnReportModels().addAll(insertedActivitiesPattern.getBpmnReportModels());
@@ -159,5 +189,7 @@ public class CIACalculation {
 		getBpmnReportModels().addAll(controlFlowDifferencePattern.getBpmnReportModels());
 		getBpmnReportModels().addAll(interchangedActivitiesPattern.getBpmnReportModels());
 		getBpmnReportModels().addAll(gatewayChanges.getBpmnReportModels());
+		getBpmnReportModels().addAll(artitactChanges.getBpmnReportModels());
+		
 	}
 }

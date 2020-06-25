@@ -121,7 +121,7 @@ public class GatewayChanges extends ChangePattern{
 			
 			if( targetElement != null ) {
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel("Gateways with ID: " + element.getAttributeValue("id"), chageType, targetElement.getAttributeValue("name"));
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel("Gateways with ID: " + element.getAttributeValue("id"), "Gateway", chageType, targetElement.getAttributeValue("name"));
 			
 				bpmnReportModels.add(bpmnReportModel);
 			}

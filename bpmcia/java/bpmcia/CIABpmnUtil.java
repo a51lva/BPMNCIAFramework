@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.Activity;
 import org.camunda.bpm.model.bpmn.instance.DataInputAssociation;
+import org.camunda.bpm.model.bpmn.instance.DataObjectReference;
 import org.camunda.bpm.model.bpmn.instance.DataOutputAssociation;
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
 import org.camunda.bpm.model.bpmn.instance.Gateway;
@@ -125,15 +126,24 @@ public class CIABpmnUtil {
     }
 	
 	public static final Collection<ModelElementInstance> getActivityElements(BpmnModelInstance modelInstance){
+		
 		ModelElementType activityType = modelInstance.getModel().getType(Activity.class);
 		
 		return modelInstance.getModelElementsByType(activityType);
 	}
 	
 	public static final Collection<ModelElementInstance> getGatewayElements(BpmnModelInstance modelInstance){
+		
 		ModelElementType gatewayType = modelInstance.getModel().getType(Gateway.class);
 		
 		return modelInstance.getModelElementsByType(gatewayType);
+	}
+	
+	public static final Collection<ModelElementInstance> getDataObjectReferenceElements(BpmnModelInstance modelInstance){
+		
+		ModelElementType type = modelInstance.getModel().getType( DataObjectReference.class );
+		
+		return modelInstance.getModelElementsByType(type);
 	}
 	
 	public static final Collection<Gateway> convertToCollectionGateway(Collection< ModelElementInstance> gateways){
@@ -164,6 +174,11 @@ public class CIABpmnUtil {
 	
 	public static final boolean elementExist(ModelElementInstance element, Collection<ModelElementInstance> elements) {
 		boolean result = elements.stream().anyMatch(el -> el.getAttributeValue("id").equalsIgnoreCase(element.getAttributeValue("id")));
+		return result;
+	}
+	
+	public static final boolean elementExistByName(ModelElementInstance element, Collection<ModelElementInstance> elements) {
+		boolean result = elements.stream().anyMatch(el -> el.getAttributeValue("name").equalsIgnoreCase(element.getAttributeValue("name")));
 		return result;
 	}
 	
