@@ -12,15 +12,19 @@ import bpmcia.CIABpmnUtil;
 
 public class RemovedActivitiesPattern extends ChangePattern{
 	
-	private Collection< ModelElementInstance> removedElements;
+	private static final String REMOVED_ACTIVITY = "Removed Activity";
 	
-	private Collection<CIABpmnReportModel> bpmnReportModels;
+	private static final String ACTIVITY = "Activity";
+	
+	private Collection< ModelElementInstance> removedElements;
 	
 	public RemovedActivitiesPattern() {
 		
 		this.removedElements = new ArrayList<ModelElementInstance>();
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 	}
 	
@@ -37,6 +41,8 @@ public class RemovedActivitiesPattern extends ChangePattern{
 		this.executionTime = 0L;
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 	}
 	
@@ -67,7 +73,12 @@ public class RemovedActivitiesPattern extends ChangePattern{
 			ModelElementInstance equivalentElement = (getEquivalentElement(element)!=null)?getEquivalentElement(element):element;
 
 			if(!CIABpmnUtil.elementExist(equivalentElement, getModelElementsUpdated())) {
+				
 				removedElements.add(equivalentElement);
+				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( equivalentElement.getAttributeValue("name"), ACTIVITY, REMOVED_ACTIVITY, "");
+				
+				bpmnReportModelsChangedELements.add(bpmnReportModel);
 			}
 		}
 		
@@ -87,7 +98,7 @@ public class RemovedActivitiesPattern extends ChangePattern{
 				
 				if(targetElement != null && !CIABpmnUtil.elementExist( targetElement, removedElements ) ) {
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( element.getAttributeValue("name"), "Activity", "Removed Activity", targetElement.getAttributeValue("name") );
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( element.getAttributeValue("name"), ACTIVITY, REMOVED_ACTIVITY, targetElement.getAttributeValue("name") );
 					
 					bpmnReportModels.add( bpmnReportModel );
 				}
@@ -95,7 +106,7 @@ public class RemovedActivitiesPattern extends ChangePattern{
 			
 			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsOld()));
 			
-			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), "Removed Activity" ) );
+			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), REMOVED_ACTIVITY ) );
 			
 		}
 	}

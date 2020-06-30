@@ -11,14 +11,20 @@ import bpmcia.CIABpmnReportModel;
 import bpmcia.CIABpmnUtil;
 
 public class InterchangedActivitiesPattern extends ChangePattern{
+	
+	private static final String INTERCHANGED_ACTIVITY = "Updated Activity";
+	
+	private static final String ACTIVITY = "Activity";
+	
 	private Collection< ModelElementInstance> interchangedElements;
-	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
 	public InterchangedActivitiesPattern() {
 		
 		this.interchangedElements = new ArrayList<ModelElementInstance>();
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 	}
 	
@@ -36,6 +42,7 @@ public class InterchangedActivitiesPattern extends ChangePattern{
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 	}
 	
 	public Collection<ModelElementInstance> getInterchangedElements() {
@@ -53,6 +60,12 @@ public class InterchangedActivitiesPattern extends ChangePattern{
 	public void setBpmnReportModels(Collection<CIABpmnReportModel> bpmnReportModels) {
 		this.bpmnReportModels = bpmnReportModels;
 	}
+	
+	public String getSteps() {
+		return steps;
+	}
+	
+	
 	
 	public void execute() {
 		
@@ -73,7 +86,12 @@ public class InterchangedActivitiesPattern extends ChangePattern{
 				String updateElementName = updatedEquivalentElement.getAttributeValue("name");
 				
 				if( !oldElementName.equalsIgnoreCase(updateElementName) ) {
+					
 					interchangedElements.add(updatedEquivalentElement);
+					
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( updatedEquivalentElement.getAttributeValue("name"), ACTIVITY, INTERCHANGED_ACTIVITY, "");
+					
+					bpmnReportModelsChangedELements.add(bpmnReportModel);
 				}				
 			}
 		}
@@ -93,15 +111,42 @@ public class InterchangedActivitiesPattern extends ChangePattern{
 				
 				if( targetElement != null ) {
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", "Interchanged Activity", targetElement.getAttributeValue( "name" ) );
-				
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, INTERCHANGED_ACTIVITY, targetElement.getAttributeValue( "name" ) );
 					bpmnReportModels.add( bpmnReportModel );
+					
+//					Integer steps = Integer.valueOf(getSteps());
+//					if(steps == null) {
+//						steps = 1;
+//					}
+//					calculateInpactedActivitiesSteps(steps, element,  targetElement);
+					
 				}
 			}
 			
 			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated() ) );
 			
-			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsUpdated(), "Interchanged Activity"  ) );
+			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsUpdated(), INTERCHANGED_ACTIVITY  ) );
 		}
 	}
+	
+	public void calculateInpactedActivitiesSteps(Integer steps, ModelElementInstance element,  ModelElementInstance targetElement) {
+		
+		if(steps == 1) {
+			CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, INTERCHANGED_ACTIVITY, targetElement.getAttributeValue( "name" ) );
+			bpmnReportModels.add( bpmnReportModel );
+		}else {
+			
+			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsUpdated());
+			
+			for( String targetId: targetActivities ) {
+				
+				ModelElementInstance targetEl = CIABpmnUtil.getElement(targetId, getModelElementsUpdated());
+				
+				if( targetEl != null ) {
+					calculateInpactedActivitiesSteps(steps-1, targetElement, targetEl);
+				}
+			}
+		}
+    }
+	
 }

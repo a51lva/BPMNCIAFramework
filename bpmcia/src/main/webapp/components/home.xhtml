@@ -75,56 +75,25 @@
 
 	<div class="row mt-50">
 		<div class="col-12 d-flex justify-content-between align-itens--center">
-			<h4 class="text-uppercase mb-0">Impact Calculation Rules</h4>
+			<h4 class="text-uppercase mb-0">Change Impact Analysis in N'steps</h4>
 		</div>
 	</div>
 	
 	<div class="row mt-2">
 		  <div class="col-sm-12 ">
-		  		<div class="checkbox">
-		             <label style="font-size: 1.5em" class="d-flex">
-		                <input type="checkbox" value="" checked="true"/>
-		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-		                <span> Change Impact Analysis by Changing Activities</span>
-		            </label>
-		        </div>
-		  		<div class="d-flex">
-			  		<div class="checkbox">
+		  		<p:outputPanel id="ciaSteps">
+			  		<p class="checkbox">
 			             <label style="font-size: 1.5em" class="d-flex">
-			                <input type="checkbox" value="" checked="true"/>
-			                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-			                <span> Change Impact Analysis in</span>
+			                <span> Number of Steps: #{main.ciaSteps} </span>
 			            </label>
-			        </div>
+			        </p>
 			        
-			        <h:panelGroup>
-				        <div class="dropdown ml-3">
-						  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 160px;">
-						    #{main.getCiaSteps()} #{(main.getCiaSteps() > 1)?"Steps":"Step"}
-						  </button>
-						  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-						    <h:outputText styleClass="dropdown-item" value="N Steps" />
-						    <h:outputText styleClass="dropdown-item" value="1 Step"/>
-						    <h:outputText styleClass="dropdown-item" value="2 Steps"/>
-						    <h:outputText styleClass="dropdown-item" value="3 Steps"/>
-						  </div>
-						</div>	
-					</h:panelGroup>	        
-		        </div>
-		        <div class="checkbox">
-		             <label style="font-size: 1.5em">
-		                <input type="checkbox" value="" checked="true"/>
-		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-		                Change Impact Analysis via  Artifact Association
-		            </label>
-		        </div>
-		  		<div class="checkbox">
-		             <label style="font-size: 1.5em">
-		                <input type="checkbox" value="" checked="true"/>
-		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-		                Change Impact Analysis by Gateways and Artifacts.
-		            </label>
-		        </div>
+			        <p class="dropdown ml-0">
+						  <p:inputText styleClass="form-control" style="width:100px"  value="#{main.ciaSteps}">
+				            <p:ajax listener="#{main.updateCiaCalculationSteps()}" update="ciaSteps" />
+				         </p:inputText>			  
+					</p>
+		        </p:outputPanel>
 				
 		  </div>
 	 </div>

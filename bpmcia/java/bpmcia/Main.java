@@ -34,9 +34,11 @@ public class Main{
 	
 	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
+	Collection<CIABpmnReportModel> bpmnReportModelsChangedELements;
+	
 	private SidemenuManagement sidebarMenu;
 	
-	private Integer ciaSteps = 1;
+	private String ciaSteps = "1";
 	
 	
 	@PostConstruct
@@ -45,7 +47,8 @@ public class Main{
 			
 			sidebarMenu = new SidemenuManagement("dashboard");
 			
-			String fileNameOld = "Under-warranty-after-sales-service-business-process-model.bpmn", fileNameUpdated = "Under-warranty-after-sales-service-business-process-model2.bpmn";
+			String fileNameOld = "Under-warranty-after-sales-service-business-process-model.bpmn";
+			String fileNameUpdated = "Under-warranty-after-sales-service-business-process-model2.bpmn";
 			
 			setFirstfile(fileNameOld);
 			
@@ -56,9 +59,11 @@ public class Main{
 			
 			setElementsOldModel(oldModel.getElements());
 			setElementsUpdatedModel(updatedModel.getElements());
-			ciaCalculation = new CIACalculation(oldModel, updatedModel);
+			ciaCalculation = new CIACalculation(oldModel, updatedModel, ciaSteps);
 			
 			bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+			
+			bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 			
 			changedElements = new ArrayList<ModelElementInstance>();
 			
@@ -71,6 +76,10 @@ public class Main{
 		
 		setAppname("BPMN Based CIA Framework");
 		
+	}
+	
+	public void updateCiaCalculationSteps() {
+		ciaCalculation.setSteps(getCiaSteps());
 	}
 	
 	public String getAppname() {
@@ -161,6 +170,14 @@ public class Main{
 		this.bpmnReportModels = bpmnReportModels;
 	}
 	
+	public Collection<CIABpmnReportModel> getBpmnReportModelsChangedELements() {
+		return bpmnReportModelsChangedELements;
+	}
+	
+	public void setBpmnReportModelsChangedELements(Collection<CIABpmnReportModel> bpmnReportModelsChangedELements) {
+		this.bpmnReportModelsChangedELements = bpmnReportModelsChangedELements;
+	}
+	
 	public String getPieChartData() {
 		return pieChart.toString();
 	}
@@ -185,11 +202,11 @@ public class Main{
 		this.sidebarMenu = sidebarMenu;
 	}
 	
-	public Integer getCiaSteps() {
+	public String getCiaSteps() {
 		return ciaSteps;
 	}
 
-	public void setCiaSteps(Integer ciaSteps) {
+	public void setCiaSteps(String ciaSteps) {
 		this.ciaSteps = ciaSteps;
 	}
 
@@ -202,6 +219,8 @@ public class Main{
 		setChangedElements(ciaCalculation.getChangedElements());
 		
 		setBpmnReportModels(ciaCalculation.getBpmnReportModels());
+		
+		setBpmnReportModelsChangedELements(ciaCalculation.getBpmnReportModelsChangedELements());
 		
 		List<Object> piechartArray = new ArrayList<Object>();
 		

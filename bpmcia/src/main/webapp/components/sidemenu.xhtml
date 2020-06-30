@@ -10,10 +10,6 @@
 	  		<p:commandLink value="Impact Analysis" actionListener="#{main.getSidebarMenu().setSelectedMenu('dashboard')}" update="@form"/>
 	  </li>
 	  
-	  <li class="list-group-item #{(main.getSidebarMenu().getSelectedMenu() eq 'traceability')? 'list-item--selected':''}" >
-	  		<p:commandLink value="Traceability Information" actionListener="#{main.getSidebarMenu().setSelectedMenu('traceability')}" update="@form"/>
-	  </li>
-	 
 	  <li class="list-group-item #{(main.getSidebarMenu().getSelectedMenu() eq 'result')? 'list-item--selected':''}">
 	  		<p:commandLink value="CIA Result" actionListener="#{main.getSidebarMenu().setSelectedMenu('result')}" update="@form" disabled="#{main.getBpmnReportModels().size() == 0}"/>
 	  </li>

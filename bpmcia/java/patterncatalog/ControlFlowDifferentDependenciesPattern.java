@@ -12,17 +12,25 @@ import bpmcia.CIABpmnReportModel;
 import bpmcia.CIABpmnUtil;
 
 public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
-	private Collection< ModelElementInstance> changedElements;
-	private Collection<Gateway> gatewayElementsOld;
-	private Collection<Gateway> gatewayElementsUpdated;
+	private static final String CONTROL_FLOW_DIFFERENT_DEPENDENCY = "Changed ControlFlow in ";
+	private static final String CONTROL_FLOW_DIFFERENT = "Changed ControlFlow";
 	
-	private Collection<CIABpmnReportModel> bpmnReportModels;
+	private static final String ACTIVITY = "Activity";
+	
+	private Collection< ModelElementInstance> changedElements;
+	
+	private Collection<Gateway> gatewayElementsOld;
+	
+	private Collection<Gateway> gatewayElementsUpdated;
 	
 	public ControlFlowDifferentDependenciesPattern() {
 		
 		this.changedElements = new ArrayList<ModelElementInstance>();
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
 	}
 	
 	public ControlFlowDifferentDependenciesPattern(Collection< ModelElementInstance> activityElementsOld, Collection< ModelElementInstance> activityElementsUpdated, Collection<Gateway> gatewayElementsOld, Collection<Gateway> gatewayElementsUpdated) {
@@ -42,6 +50,8 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 		this.gatewayElementsUpdated = gatewayElementsUpdated;
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 	}
 	
 	public Collection<ModelElementInstance> getChangedElements() {
@@ -66,14 +76,6 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 	
 	public void setGatewayElementsUpdated(Collection<Gateway> gatewayElementsUpdated) {
 		this.gatewayElementsUpdated = gatewayElementsUpdated;
-	}
-	
-	public Collection<CIABpmnReportModel> getBpmnReportModels() {
-		return bpmnReportModels;
-	}
-	
-	public void setBpmnReportModels(Collection<CIABpmnReportModel> bpmnReportModels) {
-		this.bpmnReportModels = bpmnReportModels;
 	}
 	
 	public void execute() {
@@ -102,12 +104,19 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 							
 							changedElements.add(equivalentActivityElement);
 							
-							break;
+							CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentActivityElement.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT, "");
+							
+							bpmnReportModelsChangedELements.add(bpmnReportModel);
+							
+							break; 
 						}
 					}
 				}else {
 					
 					changedElements.add(equivalentActivityElement);
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentActivityElement.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT, "");
+					
+					bpmnReportModelsChangedELements.add(bpmnReportModel);
 					
 				}
 			}
@@ -125,7 +134,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 			
 			if(targetActivities.size() == 0) {
 		
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", "ControlFlow Different Dependency", "There are no directed Inpacted Activity by changing "+element.getAttributeValue("name"));
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT_DEPENDENCY, "There are no directed Inpacted Activity by changing "+element.getAttributeValue("name"));
 				
 				bpmnReportModels.add(bpmnReportModel);
 			
@@ -137,7 +146,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 					
 					if(targetElement != null ) {
 						
-						CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", "ControlFlow Different Dependency", targetElement.getAttributeValue("name"));
+						CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT_DEPENDENCY, targetElement.getAttributeValue("name"));
 						
 						bpmnReportModels.add(bpmnReportModel);
 					}	
@@ -146,7 +155,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 			
 			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated()));
 			
-			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), "ControlFlow Different Dependency" ) );
+			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), CONTROL_FLOW_DIFFERENT_DEPENDENCY ) );
 			
 		}
 	}

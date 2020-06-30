@@ -16,15 +16,25 @@ import bpmcia.CIABpmnUtil;
 public abstract class ChangePattern{
 	
 	Collection< ModelElementInstance> modelElementsOld;
+	
 	Collection< ModelElementInstance> modelElementsUpdated;
+	
 	HashMap<String, ModelElementInstance> equivalentMapElements;
+	
+	String steps;
+	
 	Long executionTime = 0L;
+	
+	Collection<CIABpmnReportModel> bpmnReportModels;
+	
+	Collection<CIABpmnReportModel> bpmnReportModelsChangedELements;
 	
 	public ChangePattern() {
 		this.executionTime = 0L;
 		this.modelElementsOld = new ArrayList<ModelElementInstance>();
 		this.modelElementsUpdated = new ArrayList<ModelElementInstance>();
 		this.equivalentMapElements = new HashMap<String, ModelElementInstance>();
+		this.steps = "1";
 	}
 	
 	public Long getExecutionTime() {
@@ -59,6 +69,30 @@ public abstract class ChangePattern{
 		this.equivalentMapElements = equivalentMapElements;
 	}
 	
+	public String getSteps() {
+		return steps;
+	}
+	
+	public void setSteps(String steps) {
+		this.steps = steps;
+	}
+	
+	public Collection<CIABpmnReportModel> getBpmnReportModels() {
+		return bpmnReportModels;
+	}
+
+	public void setBpmnReportModels(Collection<CIABpmnReportModel> bpmnReportModels) {
+		this.bpmnReportModels = bpmnReportModels;
+	}
+
+	public Collection<CIABpmnReportModel> getBpmnReportModelsChangedELements() {
+		return bpmnReportModelsChangedELements;
+	}
+
+	public void setBpmnReportModelsChangedELements(Collection<CIABpmnReportModel> bpmnReportModelsChangedELements) {
+		this.bpmnReportModelsChangedELements = bpmnReportModelsChangedELements;
+	}
+
 	public Long calculateExecutionTime(Instant startMoment) {
 		Instant endMoment = Instant.now();
 		return Duration.between(startMoment, endMoment).toMillis();

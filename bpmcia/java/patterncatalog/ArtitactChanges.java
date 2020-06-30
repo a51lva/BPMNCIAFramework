@@ -14,8 +14,12 @@ import bpmcia.CIABpmnUtil;
 
 public class ArtitactChanges extends ChangePattern{
 	
-	private Collection<CIABpmnReportModel> bpmnReportModels;
-	
+	private static final String ARTIFACT = "Artifact";
+
+	private static final String REMOVED_ARTIFACT = "Removed Artifact";
+
+	private static final String INSERTED_ARTIFACT = "Inserted Artifact";
+
 	private Collection< ModelElementInstance> changedArtifacts;
 	
 	private Collection< ModelElementInstance> oldArtifactElements, updatedArtifactElements;
@@ -23,6 +27,8 @@ public class ArtitactChanges extends ChangePattern{
 	public ArtitactChanges() {
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 		this.changedArtifacts = new ArrayList<ModelElementInstance>();
 		
@@ -43,6 +49,8 @@ public class ArtitactChanges extends ChangePattern{
 		this.executionTime = 0L;
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 	}	
 
@@ -90,9 +98,13 @@ public class ArtitactChanges extends ChangePattern{
 
 			if( !CIABpmnUtil.elementExistByName( equivalentElement, getOldArtifactElements() ) ) {
 				
-				calculateInpactedActivities(equivalentElement, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated()), "Inserted Artifact" );
-				
 				changedArtifacts.add(equivalentElement);
+				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentElement.getAttributeValue("name"), ARTIFACT, INSERTED_ARTIFACT, "");
+				
+				bpmnReportModelsChangedELements.add(bpmnReportModel);
+				
+				calculateInpactedActivities(equivalentElement, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated()), INSERTED_ARTIFACT );
 				
 			}			
 			
@@ -104,10 +116,14 @@ public class ArtitactChanges extends ChangePattern{
 
 			if( !CIABpmnUtil.elementExistByName( equivalentElement, getUpdatedArtifactElements() ) ) {
 				
-				calculateInpactedActivities(equivalentElement, CIABpmnUtil.convertToCollectionActvity(getModelElementsOld()), "Removed Artifact" ); 
-				
 				changedArtifacts.add(equivalentElement);
 				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentElement.getAttributeValue("name"), ARTIFACT, REMOVED_ARTIFACT, "");
+
+				bpmnReportModelsChangedELements.add(bpmnReportModel);
+				
+				calculateInpactedActivities(equivalentElement, CIABpmnUtil.convertToCollectionActvity(getModelElementsOld()), REMOVED_ARTIFACT ); 
+								
 			}
 		}
 		
@@ -115,7 +131,7 @@ public class ArtitactChanges extends ChangePattern{
 	}
 	
 	
-	private void calculateInpactedActivities(ModelElementInstance element, Collection<Activity> activities, String chageType) {
+	private void calculateInpactedActivities(ModelElementInstance element, Collection<Activity> activities, String changeType) {
 					
 		for(Activity at: activities) {
 			
@@ -125,7 +141,7 @@ public class ArtitactChanges extends ChangePattern{
 				
 				if( doa.getTarget().getId().equalsIgnoreCase(element.getAttributeValue("id"))) {
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Artifact", chageType, at.getAttributeValue("name"));
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ARTIFACT, changeType, at.getAttributeValue("name"));
 					
 					bpmnReportModels.add(bpmnReportModel);
 					

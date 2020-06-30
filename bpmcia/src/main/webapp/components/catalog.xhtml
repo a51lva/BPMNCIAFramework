@@ -12,36 +12,269 @@
 	
 	<div class="row my-5">
 		  <div class="col-sm-12 ">
-		  		<div class="checkbox">
-		             <label style="font-size: 1.5em">
-		                <input type="checkbox" value="" checked="true"/>
-		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-		                Inserted Activities
-		            </label>
-		        </div>
-		        <div class="checkbox">
-		             <label style="font-size: 1.5em">
-		                <input type="checkbox" value="" checked="true"/>
-		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-		                Interchanged Activities
-		            </label>
-		        </div>
-		  		<div class="checkbox">
-		             <label style="font-size: 1.5em">
-		                <input type="checkbox" value="" checked="true"/>
-		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-		                Removed Activities
-		            </label>
-		        </div>
+		  		
+		  		<div class="accordion" id="accordion1">
+				  	  <h2>Activity Differences</h2>
+					  <div class="card">
+					    <div class="card-header" id="headingOne">
+					      <h4 class="mb-0">
+					        <button class="btn btn-link btn-block text-left collapsed button-link--implemented" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+					          Removed Activities
+					        </button>
+					      </h4>
+					    </div>
+					
+					    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion1">
+					      <div class="card-body">
+					        An activity exists in one process, but no activity representing an equivalent exists in the other process.
+					      </div>
+					    </div>
+					  </div>
+					  
+					  <div class="card">
+					    <div class="card-header" id="headingTwo">
+					      <h4 class="mb-0">
+					        <button class="btn btn-link btn-block text-left collapsed button-link--implemented" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					          Updated Activities
+					        </button>
+					      </h4>
+					    </div>
+					    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion1">
+					      <div class="card-body">
+					        An activity exists in one process and an activity that has the same effect exists in the other process.
+					      </div>
+					    </div>
+					  </div>
+					  
+					  <div class="card">
+					    <div class="card-header" id="headingThree">
+					      <h4 class="mb-0">
+					        <button class="btn btn-link btn-block text-left collapsed button-link--unimplemented" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+					          Refined Activities
+					        </button>
+					      </h4>
+					    </div>
+					    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion1">
+					      <div class="card-body">
+					        An activity exists in one process, but represented by a collection of activities in the other process.
+					      </div>
+					    </div>
+					  </div>
+					  
+					  <div class="card">
+					   	<div class="card-header" id="headingFour">
+					      <h4 class="mb-0">
+					        <button class="btn btn-link btn-block text-left collapsed button-link--unimplemented" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+					          Corresponding collections of activities
+					        </button>
+					      </h4>
+					    </div>
+					    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion1">
+					      <div class="card-body">
+					        Two processes have corresponding collections of activities, if a collection of activities in one process is equivalent to a collection of activities in the other process.
+					      </div>
+					    </div>
+					  </div>
+					  
+					  <div class="card">
+					   	<div class="card-header" id="headingFive">
+					      <h4 class="mb-0">
+					        <button class="btn btn-link btn-block text-left collapsed button-link--implemented" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+					          Inserted activities
+					        </button>
+					      </h4>
+					    </div>
+					    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion1">
+					      <div class="card-body">
+					        An activity doesn't exist in the first process, but exists in the updated process.
+					      </div>
+					    </div>
+					  </div>
+					  
+				</div>
+					
+				<div class="accordion" id="accordion2">
+					  
+				  <h2 class="mt-5">Artifacts Differences</h2>
+				    
+			  	  <div class="card">
+				    <div class="card-header" id="headingSix">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--implemented" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+				          Removed Artifacts
+				        </button>
+				      </h4>
+				    </div>
 				
-				<div class="checkbox">
-		             <label style="font-size: 1.5em">
-		                <input type="checkbox" value="" checked="true"/>
-		                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-		                Different Dependencies
-		            </label>
-		        </div>
+				    <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion2">
+				      <div class="card-body">An activity has an artifact reference in one process, but no artifacts reference representing an equivalent exists in the other process.</div>
+				    </div>
+				  </div>
+				  
+				  <div class="card">
+				   	<div class="card-header" id="headingSeven">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--implemented" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+				          Inserted Artifacts
+				        </button>
+				      </h4>
+				    </div>
+				    <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion2">
+				      <div class="card-body">
+				        An activity does not have an artifact reference in the first process, but exists an artifact reference in the updated process.
+				      </div>
+				    </div>
+				  </div>
+				</div> 
+					
+				<div class="accordion" id="accordion3">
+				  <h2 class="mt-5">Authorization Differences</h2>
+				    
+			  	  <div class="card">
+				    <div class="card-header" id="headingHeight">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--unimplemented" type="button" data-toggle="collapse" data-target="#collapseHeight" aria-expanded="false" aria-controls="collapseHeight">
+				          Different roles
+				        </button>
+				      </h4>
+				    </div>
 				
+				    <div id="collapseHeight" class="collapse" aria-labelledby="headingHeight" data-parent="#accordion3">
+				      <div class="card-body">
+				        	An activity is assigned to one role in one process and to another in the other.
+				      </div>
+				    </div>
+				  </div>
+				  
+				  <div class="card">
+				   	<div class="card-header" id="headingNine">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--unimplemented" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+				          Single role vs. collection of roles
+				        </button>
+				      </h4>
+				    </div>
+				    <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion3">
+				      <div class="card-body">
+				        An activity is assigned to a single role in one process and assigned to multiple roles in the other.
+				      </div>
+				    </div>
+				  </div>
+				  
+				  <div class="card">
+				   	<div class="card-header" id="headingTen">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--unimplemented" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+				          Different collections of roles
+				        </button>
+				      </h4>
+				    </div>
+				    <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion3">
+				      <div class="card-body">
+				        An activity is performed by one collection of roles in one process and to another collection of roles in the other process.
+				      </div>
+				    </div>
+				  </div>
+				</div>
+					
+				<div class="accordion" id="accordion4">
+				  <h2 class="mt-5">Control-flow Differences</h2>
+				  
+				  <div class="card">
+				   	<div class="card-header" id="headingEleven">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--implemented" type="button" data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+				          Different dependencies
+				        </button>
+				      </h4>
+				    </div>
+				    <div id="collapseEleven" class="collapse" aria-labelledby="headingEleven" data-parent="#accordion4">
+				      <div class="card-body">
+				        Equivalent activities from two processes have different dependencies on which they depend.
+				      </div>
+				    </div>
+				  </div>
+				  
+				  <div class="card">
+				   	<div class="card-header" id="headingTwelve">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--unimplemented" type="button" data-toggle="collapse" data-target="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">
+				          Additional dependencies
+				        </button>
+				      </h4>
+				    </div>
+				    <div id="collapseTwelve" class="collapse" aria-labelledby="headingTwelve" data-parent="#accordion4">
+				      <div class="card-body">
+				        A special case of having different dependencies is the case in which one set of activities includes the other.
+				      </div>
+				    </div>
+				  </div>
+				  
+				  <div class="card">
+				   	<div class="card-header" id="headingThirteen">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--unimplemented" type="button" data-toggle="collapse" data-target="#collapseThirteen" aria-expanded="false" aria-controls="collapseThirdteen">
+				          Activities occur at different moments in processes
+				        </button>
+				      </h4>
+				    </div>
+				    <div id="collapseThirteen" class="collapse" aria-labelledby="headingThirteen" data-parent="#accordion4">
+				      <div class="card-body">
+				        Another special case of having different dependencies is the case in which the sets of activities are disjoint.
+				      </div>
+				    </div>
+				  </div>
+				  
+				  <div class="card">
+				   	<div class="card-header" id="headingFourteen">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--unimplemented" type="button" data-toggle="collapse" data-target="#collapseFourteen" aria-expanded="false" aria-controls="collapseFourteen">
+				          Iterative vs. once-off occurrence
+				        </button>
+				      </h4>
+				    </div>
+				    <div id="collapseFourteen" class="collapse" aria-labelledby="headingFourteen" data-parent="#accordion4">
+				      <div class="card-body">
+				        An activity is part of a loop in one process while it is not in the other process.
+				      </div>
+				    </div>
+				  </div>
+				  	  
+				</div>
+				
+				<div class="accordion" id="accordion5">
+					  
+				  <h2 class="mt-5">Gateway Differences</h2>
+				    
+			  	  <div class="card">
+				    <div class="card-header" id="headingFifteen">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--implemented" type="button" data-toggle="collapse" data-target="#collapseFifteen" aria-expanded="false" aria-controls="collapseFifteen">
+				          Removed Gateway
+				        </button>
+				      </h4>
+				    </div>
+				
+				    <div id="collapseFifteen" class="collapse" aria-labelledby="headingFifteen" data-parent="#accordion5">
+				      <div class="card-body">A gateway exists in one process, but no gateway representing an equivalent exists in the other process.</div>
+				    </div>
+				  </div>
+				  
+				  <div class="card">
+				   	<div class="card-header" id="headingSixteen">
+				      <h4 class="mb-0">
+				        <button class="btn btn-link btn-block text-left collapsed button-link--implemented" type="button" data-toggle="collapse" data-target="#collapseSixteen" aria-expanded="false" aria-controls="collapseSixteen">
+				          Inserted Gateway
+				        </button>
+				      </h4>
+				    </div>
+				    <div id="collapseSixteen" class="collapse" aria-labelledby="headingSixteen" data-parent="#accordion5">
+				      <div class="card-body">
+				        A gateway does not exist in the first process, but exists in the updated process.
+				      </div>
+				    </div>
+				  </div>
+				</div>			
 		  </div>
 	 </div>
 </div>

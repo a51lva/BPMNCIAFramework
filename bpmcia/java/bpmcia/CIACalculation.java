@@ -13,21 +13,34 @@ import patterncatalog.InterchangedActivitiesPattern;
 import patterncatalog.RemovedActivitiesPattern;
 
 public class CIACalculation {
+	
 	private CIABpmnModelInstance oldModel;
+	
 	private CIABpmnModelInstance updatedModel;
 
 	private RemovedActivitiesPattern removedActivitiesPattern;
+	
 	private InsertedActivitiesPattern insertedActivitiesPattern;
+	
 	private ControlFlowDifferentDependenciesPattern controlFlowDifferencePattern;
+	
 	private InterchangedActivitiesPattern interchangedActivitiesPattern;
-	private GatewayChanges gatewayChanges;	
+	
+	private GatewayChanges gatewayChanges;
+	
 	private ArtitactChanges artitactChanges;
 	
 	private Collection< ModelElementInstance> changedElements;	
 	
 	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
-	public CIACalculation(CIABpmnModelInstance oldModel, CIABpmnModelInstance updatedModel) {
+	Collection<CIABpmnReportModel> bpmnReportModelsChangedELements;
+	
+	private String steps;
+	
+	
+	
+	public CIACalculation(CIABpmnModelInstance oldModel, CIABpmnModelInstance updatedModel, String steps) {
 		
 		this.oldModel = oldModel;
 		
@@ -35,41 +48,59 @@ public class CIACalculation {
 		
 		this.removedActivitiesPattern = new RemovedActivitiesPattern(
 																	  	CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
+																	  	
 																	  	CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
 																	);
 		
 		this.insertedActivitiesPattern = new InsertedActivitiesPattern(
 																			CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
+																			
 																			CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
 																	  );
 		
 		this.controlFlowDifferencePattern = new ControlFlowDifferentDependenciesPattern(
 																							CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
+																							
 																							CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance()), 
+																							
 																							CIABpmnUtil.convertToCollectionGateway(CIABpmnUtil.getGatewayElements(this.oldModel.getModelInstance())), 
+																				
 																							CIABpmnUtil.convertToCollectionGateway(CIABpmnUtil.getGatewayElements(this.updatedModel.getModelInstance()))
 																						);
 		this.interchangedActivitiesPattern = new InterchangedActivitiesPattern(
 																				CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
+																				
 																				CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
 																			  );
 		
 		this.gatewayChanges = new GatewayChanges(
 													CIABpmnUtil.getGatewayElements(this.oldModel.getModelInstance()), 
+													
 													CIABpmnUtil.getGatewayElements(this.updatedModel.getModelInstance()), 
+													
 													CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
+													
 													CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
 												);
 		
 		this.artitactChanges = new ArtitactChanges(
 													CIABpmnUtil.getDataObjectReferenceElements(this.oldModel.getModelInstance()), 
+													
 													CIABpmnUtil.getDataObjectReferenceElements(this.updatedModel.getModelInstance()), 
+													
 													CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
+													
 													CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
 												  );
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
+		this.steps = steps;
 	}
+	
+	
 	
 	public CIABpmnModelInstance getOldModel() {
 		return oldModel;
@@ -151,6 +182,26 @@ public class CIACalculation {
 		this.bpmnReportModels = bpmnReportModels;
 	}
 	
+	public Collection<CIABpmnReportModel> getBpmnReportModelsChangedELements() {
+		return bpmnReportModelsChangedELements;
+	}
+
+	public void setBpmnReportModelsChangedELements(Collection<CIABpmnReportModel> bpmnReportModelsChangedELements) {
+		this.bpmnReportModelsChangedELements = bpmnReportModelsChangedELements;
+	}
+	
+	public String getSteps() {
+		return steps;
+	}
+	
+	public void setSteps(String steps) {
+		this.steps = steps;
+	}
+	
+	
+	
+	
+	
 	public void execute() {
 		
 		removedActivitiesPattern.execute();
@@ -176,6 +227,8 @@ public class CIACalculation {
 	
 	private void calculateInpactedActivities() {
 		
+		System.out.println("Steps: "+steps);
+		
 		removedActivitiesPattern.calculateInpactedActivities();
 		
 		insertedActivitiesPattern.calculateInpactedActivities();
@@ -185,11 +238,28 @@ public class CIACalculation {
 		interchangedActivitiesPattern.calculateInpactedActivities();
 		
 		getBpmnReportModels().addAll(insertedActivitiesPattern.getBpmnReportModels());
+		
+		getBpmnReportModelsChangedELements().addAll(insertedActivitiesPattern.getBpmnReportModelsChangedELements());
+				
 		getBpmnReportModels().addAll(removedActivitiesPattern.getBpmnReportModels());
+		
+		getBpmnReportModelsChangedELements().addAll(removedActivitiesPattern.getBpmnReportModelsChangedELements());
+		
 		getBpmnReportModels().addAll(controlFlowDifferencePattern.getBpmnReportModels());
+		
+		getBpmnReportModelsChangedELements().addAll(controlFlowDifferencePattern.getBpmnReportModelsChangedELements());
+		
 		getBpmnReportModels().addAll(interchangedActivitiesPattern.getBpmnReportModels());
+		
+		getBpmnReportModelsChangedELements().addAll(interchangedActivitiesPattern.getBpmnReportModelsChangedELements());
+		
 		getBpmnReportModels().addAll(gatewayChanges.getBpmnReportModels());
+		
+		getBpmnReportModelsChangedELements().addAll(gatewayChanges.getBpmnReportModelsChangedELements());
+		
 		getBpmnReportModels().addAll(artitactChanges.getBpmnReportModels());
+		
+		getBpmnReportModelsChangedELements().addAll(artitactChanges.getBpmnReportModelsChangedELements());
 		
 	}
 }

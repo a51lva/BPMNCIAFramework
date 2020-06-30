@@ -6,7 +6,7 @@
 	
 	<div class="row my-4">
 		<div class="col-12 d-flex justify-content-between align-itens--center">
-			<h1 class="display-4 text-uppercase mb-0">Impact Analysis Report</h1>
+			<h1 class="display-4 text-uppercase mb-0">Change Impact Analysis Result</h1>
 			<p:commandLink id="download" styleClass="btn btn-primary btn-lg text-uppercase ml-3" style="height:auto" title="Export to PDF" disabled="#{main.getBpmnReportModels().size() == 0}">
 				<i class="fa fa-download" aria-hidden="true"></i>
 			</p:commandLink>
@@ -22,7 +22,7 @@
 		        <h5 class="card-title mb-0 d-flex justify-content-between align-itens--center">
 	        		<span><b>Old BPMN File:</b> <span>#{main.firstfile}</span></span>
 	        		<p:commandLink styleClass="text-uppercase ml-3 min-width--110 text-right" value="View " disabled="true"> <i class="fa fa-chevron-right" aria-hidden="true"></i></p:commandLink>
-	        	</h5>
+	        	</h5> 
 		      </div>
 		    </div>
 		  </div>
@@ -36,36 +36,70 @@
 		      </div>
 		    </div>
 		  </div>
-	  </div>
+	   </div>
 		
 		<p:outputPanel id="changeResultPanel">
 			<div class="row">
-			  	<div class="col-12">		  		
-			  		<table class="table table-hover">
-					  <thead class="thead-light">
-					    <tr>
-					      <th scope="col" width="50px">#</th>
-					      <th scope="col" width="300px" class="text-uppercase align-middle">Changed Element</th>
-					      <th scope="col" width="300px" class="text-uppercase align-middle">Element Type</th>
-					      <th scope="col" class="text-uppercase align-middle">Change Pattern</th>
-					      <th scope="col" class="text-uppercase align-middle">Impacted Activity</th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					  	<ui:repeat var="reportModels" value="#{main.getBpmnReportModels()}" varStatus="status">
+			  	<div class="col-12">
+			  		<nav>
+					  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+					    <a class="nav-item nav-link active" id="nav-1-tab" data-toggle="tab" href="#nav-1" role="tab" aria-controls="nav-1" aria-selected="true">CHANGED ELEMENTS</a>
+					    <a class="nav-item nav-link" id="nav-2-tab" data-toggle="tab" href="#nav-2" role="tab" aria-controls="nav-2" aria-selected="false">IMPACTED ACTIVITIES</a>
+					  </div>
+					</nav>
+					
+					<div class="tab-content" id="nav-tabContent">
+					  <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
+					  	<table class="table table-hover">
+						  <thead class="thead-light">
 						    <tr>
-						      <th scope="row" class="align-middle">#{status.index + 1}</th>
-						      <td class="align-middle">#{reportModels.getChangedElement()}</td>
-						       <td class="align-middle">#{reportModels.getElementType()}</td>
-						      <td class="align-middle">#{reportModels.getChangePattern()}</td>
-						      <td class="align-middle">#{reportModels.getInpactedActivity()}</td>
+						      <th scope="col" width="50px">#</th>
+						      <th scope="col" width="" class="text-uppercase align-middle">Element</th>
+						      <th scope="col" width="50px" class="text-uppercase align-middle">Type</th>
+						      <th scope="col" width="200px" class="text-uppercase align-middle">Cause</th>
 						    </tr>
-					    </ui:repeat>
-					  </tbody>
-					</table>
+						  </thead>
+						  <tbody>
+						  	<ui:repeat var="reportModels" value="#{main.getBpmnReportModelsChangedELements()}" varStatus="status">
+							    <tr>
+							      <th scope="row" class="align-middle">#{status.index + 1}</th>
+							      <td class="align-middle">#{reportModels.getChangedElement()}</td>
+							       <td class="align-middle">#{reportModels.getElementType()}</td>
+							      <td class="align-middle">#{reportModels.getChangePattern()}</td>
+							    </tr>
+						    </ui:repeat>
+						  </tbody>
+						</table>
+					  </div>
+					  
+					  <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
+					  	<table class="table table-hover">
+						  <thead class="thead-light">
+						    <tr>
+						      <th scope="col" width="50px">#</th>
+						      <th scope="col" width="45%" class="text-uppercase align-middle">Impacted Activity</th>
+						      <th scope="col" class="text-uppercase align-middle">Reason</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						  	<ui:repeat var="reportModels" value="#{main.getBpmnReportModels()}" varStatus="status">
+							    <tr>
+							      <th scope="row" class="align-middle">#{status.index + 1}</th>
+							      <td class="align-middle">#{reportModels.getInpactedActivity()}</td>
+							      <td class="align-middle">#{reportModels.getChangePattern()}  ( #{reportModels.getChangedElement()} )</td>							      
+							    </tr>
+						    </ui:repeat>
+						  </tbody>
+						</table>
+					  </div>
+					</div>
 			  	</div>
-		  </div>
-		  <div class="row">
+			  </div>
+			  
+		    <div class="row my-5">
+		    	<div class="col-12 mb-3 text-center">
+		    		<h4>Change Impact Analysis Graphical Comparison</h4>
+		    	</div>
 		  		<p:outputPanel rendered="#{main.getBpmnReportModels().size() > 0}" styleClass="col-5">
 		  			<figure class="highcharts-figure">
 					    <div id="pieContainer" class="chartContainer"></div>
@@ -79,7 +113,7 @@
 					</figure>
 					<p:remoteCommand onstart="columnChart('columnContainer', #{main.getColumnCategories()}, #{main.getOldData()}, #{main.getUpdatedData()} )" autoRun="true"/>
 		  		</p:outputPanel>
-		  </div>
+		    </div>
 		</p:outputPanel>
 	  	
   	</p:outputPanel>

@@ -12,14 +12,19 @@ import bpmcia.CIABpmnUtil;
 
 public class InsertedActivitiesPattern extends ChangePattern{
 	
+	private static final String ACTIVITY = "Activity";
+	
+	private static final String INSERTED_ACTIVITY = "Inserted Activity";
+	
 	private Collection< ModelElementInstance> insertedElements;
-	private Collection<CIABpmnReportModel> bpmnReportModels;
 	
 	public InsertedActivitiesPattern() {
 		
 		this.insertedElements = new ArrayList<ModelElementInstance>();
 		
-		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>(); 
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 	}
 	
@@ -36,6 +41,8 @@ public class InsertedActivitiesPattern extends ChangePattern{
 		this.executionTime = 0L;
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 	}
 	
@@ -69,6 +76,10 @@ public class InsertedActivitiesPattern extends ChangePattern{
 				
 				insertedElements.add(equivalentElement);
 				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( equivalentElement.getAttributeValue("name"), ACTIVITY, INSERTED_ACTIVITY, "");
+				
+				bpmnReportModelsChangedELements.add(bpmnReportModel);
+				
 			}
 		}
 		
@@ -87,7 +98,7 @@ public class InsertedActivitiesPattern extends ChangePattern{
 				
 				if( targetElement != null ) {
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", "Inserted Activity", targetElement.getAttributeValue("name"));
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, INSERTED_ACTIVITY, targetElement.getAttributeValue("name"));
 				
 					bpmnReportModels.add(bpmnReportModel);
 				}
@@ -95,7 +106,7 @@ public class InsertedActivitiesPattern extends ChangePattern{
 			
 			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated()));
 			
-			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), "Inserted Activity" ) );
+			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsOld(), INSERTED_ACTIVITY ) );
 			
 		}
 	}

@@ -12,15 +12,25 @@ import bpmcia.CIABpmnUtil;
 
 public class GatewayChanges extends ChangePattern{
 	
-	private Collection<CIABpmnReportModel> bpmnReportModels;
-	
+	private static final String GATEWAYS_WITH_ID = "Gateways with ID: ";
+
+	private static final String GATEWAY = "Gateway";
+
+	private static final String REMOVED_GATEWAY = "Removed Gateway";
+
+	private static final String INSERTED_GATEWAY = "Inserted Gateway";
+
 	private Collection< ModelElementInstance> changedGateways;
 	
 	private Collection< ModelElementInstance> gatewayElementsOld, gatewayElementsUpdated;
 	
 	public GatewayChanges() {
 		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 	}
 	
@@ -39,6 +49,8 @@ public class GatewayChanges extends ChangePattern{
 		this.executionTime = 0L;
 		
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
+		
+		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
 		
 	}
 
@@ -84,11 +96,16 @@ public class GatewayChanges extends ChangePattern{
 			
 			ModelElementInstance equivalentElement = ( getEquivalentElement( element ) != null ) ? getEquivalentElement( element ) : element;
 
-			if( !CIABpmnUtil.elementExist( equivalentElement, getGatewayElementsOld() ) ) {
-				
-				calculateInpactedActivities( equivalentElement, getModelElementsUpdated(), "Inserted Gateway" ); 
+			if( !CIABpmnUtil.elementExist( equivalentElement, getGatewayElementsOld() ) ) {				
 				
 				changedGateways.add(equivalentElement);
+				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(GATEWAYS_WITH_ID + equivalentElement.getAttributeValue("id"), GATEWAY, INSERTED_GATEWAY, "");
+				
+				bpmnReportModelsChangedELements.add(bpmnReportModel);
+				
+				calculateInpactedActivities( equivalentElement, getModelElementsUpdated(), INSERTED_GATEWAY ); 
+				
 				
 			}			
 			
@@ -100,9 +117,13 @@ public class GatewayChanges extends ChangePattern{
 
 			if( !CIABpmnUtil.elementExist( equivalentElement, getGatewayElementsUpdated() ) ) {
 				
-				calculateInpactedActivities(equivalentElement, getModelElementsOld(), "Removed Gateway" ); 
-				
 				changedGateways.add(equivalentElement);
+				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(GATEWAYS_WITH_ID + equivalentElement.getAttributeValue("id"), GATEWAY, REMOVED_GATEWAY, "");
+				
+				bpmnReportModelsChangedELements.add(bpmnReportModel);
+				
+				calculateInpactedActivities(equivalentElement, getModelElementsOld(), REMOVED_GATEWAY ); 
 				
 			}
 		}
@@ -111,7 +132,7 @@ public class GatewayChanges extends ChangePattern{
 	}
 	
 	
-	private void calculateInpactedActivities(ModelElementInstance element, Collection<ModelElementInstance> elements, String chageType) {
+	private void calculateInpactedActivities(ModelElementInstance element, Collection<ModelElementInstance> elements, String changeType) {
 		
 		Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId( element, elements );
 		
@@ -121,7 +142,7 @@ public class GatewayChanges extends ChangePattern{
 			
 			if( targetElement != null ) {
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel("Gateways with ID: " + element.getAttributeValue("id"), "Gateway", chageType, targetElement.getAttributeValue("name"));
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(GATEWAYS_WITH_ID + element.getAttributeValue("id"), GATEWAY, changeType, targetElement.getAttributeValue("name"));
 			
 				bpmnReportModels.add(bpmnReportModel);
 			}
