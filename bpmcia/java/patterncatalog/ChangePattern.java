@@ -132,7 +132,7 @@ public abstract class ChangePattern{
 			
 			if( targetElement != null ) {
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", changeType, targetElement.getAttributeValue("name"));
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", changeType, targetElement.getAttributeValue("name")+" [Indirected Inpact]");
 				
 				bpmnReportModels.add(bpmnReportModel);
 			}
@@ -140,4 +140,55 @@ public abstract class ChangePattern{
 		
 		return bpmnReportModels;
 	}
+	
+	public Collection<String> calculateInpactedActivitiesSteps(Collection<String> targetActivities, String name, String type, String pattern, Collection<ModelElementInstance> elementInstances) {
+		
+		Collection<String> activities = new ArrayList<String>();
+		
+		for( String targetId: targetActivities ) {
+			
+			ModelElementInstance targetElement = CIABpmnUtil.getElement(targetId, elementInstances);
+			
+			if( targetElement != null ) {
+				
+				activities.addAll(CIABpmnUtil.getTargetsElementId(targetElement, elementInstances));
+				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(name, type, pattern, targetElement.getAttributeValue( "name" ) );
+				
+				bpmnReportModels.add( bpmnReportModel );				
+				
+			}
+		}
+		
+		return activities;
+    }
+	
+	public void inpactedActivitiesSteps(Collection<String> targetActivities, String name, String type, String pattern, String stpsValue, Collection<ModelElementInstance> elementInstances) {
+		
+		if(!stpsValue.equalsIgnoreCase("n")) {
+			
+			Integer stps = Integer.valueOf(stpsValue);
+			
+			int count = 1;
+			
+			Collection<String> targets = new ArrayList<String>();
+			
+			while(stps >= 1) {
+				
+				if(count == 1) {
+					
+					targets = calculateInpactedActivitiesSteps(targetActivities, name, type, pattern, elementInstances);
+					
+				}else {
+					
+					targets = calculateInpactedActivitiesSteps(targets, name+" [IN "+count+" STEPS]", type, pattern, elementInstances);
+					
+				}
+				
+				count++;
+				stps--;
+			}
+		}
+    }
+	
 }

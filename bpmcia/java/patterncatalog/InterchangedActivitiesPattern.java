@@ -28,7 +28,7 @@ public class InterchangedActivitiesPattern extends ChangePattern{
 		
 	}
 	
-	public InterchangedActivitiesPattern(Collection< ModelElementInstance> activityElements1, Collection< ModelElementInstance> activityElements2) {
+	public InterchangedActivitiesPattern(Collection< ModelElementInstance> activityElements1, Collection< ModelElementInstance> activityElements2, String steps) {
 		
 		this.interchangedElements = new ArrayList<ModelElementInstance>();
 		
@@ -43,6 +43,8 @@ public class InterchangedActivitiesPattern extends ChangePattern{
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 		
 		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
+		this.steps = steps;
 	}
 	
 	public Collection<ModelElementInstance> getInterchangedElements() {
@@ -105,48 +107,11 @@ public class InterchangedActivitiesPattern extends ChangePattern{
 			
 			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsUpdated());
 			
-			for( String targetId: targetActivities ) {
-				
-				ModelElementInstance targetElement = CIABpmnUtil.getElement(targetId, getModelElementsUpdated());
-				
-				if( targetElement != null ) {
-					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, INTERCHANGED_ACTIVITY, targetElement.getAttributeValue( "name" ) );
-					bpmnReportModels.add( bpmnReportModel );
-					
-//					Integer steps = Integer.valueOf(getSteps());
-//					if(steps == null) {
-//						steps = 1;
-//					}
-//					calculateInpactedActivitiesSteps(steps, element,  targetElement);
-					
-				}
-			}
+			inpactedActivitiesSteps(targetActivities, element.getAttributeValue("name"), ACTIVITY, INTERCHANGED_ACTIVITY, getSteps(), getModelElementsUpdated());
 			
 			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated() ) );
 			
 			bpmnReportModels.addAll( validateDataAssociationElements( dataAssociation, element, getModelElementsUpdated(), INTERCHANGED_ACTIVITY  ) );
 		}
 	}
-	
-	public void calculateInpactedActivitiesSteps(Integer steps, ModelElementInstance element,  ModelElementInstance targetElement) {
-		
-		if(steps == 1) {
-			CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, INTERCHANGED_ACTIVITY, targetElement.getAttributeValue( "name" ) );
-			bpmnReportModels.add( bpmnReportModel );
-		}else {
-			
-			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsUpdated());
-			
-			for( String targetId: targetActivities ) {
-				
-				ModelElementInstance targetEl = CIABpmnUtil.getElement(targetId, getModelElementsUpdated());
-				
-				if( targetEl != null ) {
-					calculateInpactedActivitiesSteps(steps-1, targetElement, targetEl);
-				}
-			}
-		}
-    }
-	
 }

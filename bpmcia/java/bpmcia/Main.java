@@ -79,7 +79,19 @@ public class Main{
 	}
 	
 	public void updateCiaCalculationSteps() {
-		ciaCalculation.setSteps(getCiaSteps());
+		String stps = getCiaSteps();
+		
+		try {
+			Integer i = Integer.valueOf(stps);
+			
+			stps = (i <= 0)? "1" : i.toString();
+	    } catch (NumberFormatException nfe) {
+	    	stps = "1";
+	    }
+		
+		setCiaSteps(stps);
+		
+		ciaCalculation.setSteps(stps);
 	}
 	
 	public String getAppname() {
@@ -308,9 +320,11 @@ public class Main{
 	
 	private void clearLists() {
 		
-		bpmnReportModels.clear();
+		bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 		
-		changedElements.clear();
+		bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
+		changedElements = new ArrayList<ModelElementInstance>();
 		
 		oldData = new JSONArray();
 		
@@ -319,5 +333,9 @@ public class Main{
 		columnCategories = new JSONArray();
 		
 		pieChart = new JSONArray();
+		
+		ciaCalculation = new CIACalculation(oldModel, updatedModel, ciaSteps);
 	}
+
+
 }

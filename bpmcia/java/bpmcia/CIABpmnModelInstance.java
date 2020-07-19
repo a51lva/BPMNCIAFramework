@@ -1,6 +1,7 @@
 package bpmcia;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import org.camunda.bpm.model.bpmn.Bpmn;
@@ -15,10 +16,11 @@ public class CIABpmnModelInstance {
 	private String filename;
 	BpmnModelInstance modelInstance;
 
-	public CIABpmnModelInstance(String filename) {
+	public CIABpmnModelInstance(String filename) throws IOException {
 		this.filename = filename;		
 		
-		File file = CIABpmnUtil.getFileFromResources(filename, getClass().getClassLoader());		 
+		File file = CIABpmnUtil.getFile(filename);
+		
 	    this.modelInstance = Bpmn.readModelFromFile(file);
 	    
 	    ModelElementType elementType = modelInstance.getModel().getType(FlowElement.class);

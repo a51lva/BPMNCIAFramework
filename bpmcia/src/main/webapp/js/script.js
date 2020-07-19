@@ -1,3 +1,5 @@
+"use strict";
+
 function pieChart(container, dataArray ){
 	
 	var seriesData = dataArray;
@@ -110,3 +112,4 @@ function columnChart(container, categories, dataArrayOld, dataArrayUpdated ){
 	    }]
 	});
 }
+

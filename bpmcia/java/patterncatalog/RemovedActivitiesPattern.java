@@ -28,7 +28,7 @@ public class RemovedActivitiesPattern extends ChangePattern{
 		
 	}
 	
-	public RemovedActivitiesPattern(Collection< ModelElementInstance> activityElement1, Collection< ModelElementInstance> activityElements2) {
+	public RemovedActivitiesPattern(Collection< ModelElementInstance> activityElement1, Collection< ModelElementInstance> activityElements2, String steps) {
 		
 		this.removedElements = new ArrayList<ModelElementInstance>();
 		
@@ -43,6 +43,8 @@ public class RemovedActivitiesPattern extends ChangePattern{
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 		
 		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
+		this.steps = steps;
 		
 	}
 	
@@ -92,17 +94,7 @@ public class RemovedActivitiesPattern extends ChangePattern{
 			
 			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsOld());
 			
-			for(String targetId: targetActivities) {
-				
-				ModelElementInstance targetElement = CIABpmnUtil.getElement( targetId, getModelElementsOld() );
-				
-				if(targetElement != null && !CIABpmnUtil.elementExist( targetElement, removedElements ) ) {
-					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( element.getAttributeValue("name"), ACTIVITY, REMOVED_ACTIVITY, targetElement.getAttributeValue("name") );
-					
-					bpmnReportModels.add( bpmnReportModel );
-				}
-			}
+			inpactedActivitiesSteps(targetActivities, element.getAttributeValue("name"), ACTIVITY, REMOVED_ACTIVITY, getSteps(), getModelElementsOld());
 			
 			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsOld()));
 			

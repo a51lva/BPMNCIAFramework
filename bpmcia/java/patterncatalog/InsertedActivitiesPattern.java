@@ -28,7 +28,7 @@ public class InsertedActivitiesPattern extends ChangePattern{
 		
 	}
 	
-	public InsertedActivitiesPattern(Collection< ModelElementInstance> activityElements1, Collection< ModelElementInstance> activityElements2) {
+	public InsertedActivitiesPattern(Collection< ModelElementInstance> activityElements1, Collection< ModelElementInstance> activityElements2, String steps) {
 		
 		this.insertedElements = new ArrayList<ModelElementInstance>();
 		
@@ -43,6 +43,8 @@ public class InsertedActivitiesPattern extends ChangePattern{
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 		
 		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
+		this.steps = steps;
 		
 	}
 	
@@ -92,17 +94,7 @@ public class InsertedActivitiesPattern extends ChangePattern{
 			
 			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsUpdated());
 			
-			for( String targetId: targetActivities ) {
-				
-				ModelElementInstance targetElement = CIABpmnUtil.getElement(targetId, getModelElementsUpdated());
-				
-				if( targetElement != null ) {
-					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, INSERTED_ACTIVITY, targetElement.getAttributeValue("name"));
-				
-					bpmnReportModels.add(bpmnReportModel);
-				}
-			}
+			inpactedActivitiesSteps(targetActivities, element.getAttributeValue("name"), ACTIVITY, INSERTED_ACTIVITY, getSteps(), getModelElementsUpdated());
 			
 			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated()));
 			

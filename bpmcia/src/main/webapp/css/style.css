@@ -192,6 +192,14 @@
     content:"\2022 ";
 }
 
+.bjs-container .bjs-powered-by svg {
+    display: none;
+}
+
+.canvas-container{
+	margin-top:10px;
+	height: 500px
+}
 @media (min-width: 768px) {
 	.sidebar {
 	    background-color: #f5f5f5;

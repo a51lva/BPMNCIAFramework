@@ -49,13 +49,13 @@ public class CIACalculation {
 		this.removedActivitiesPattern = new RemovedActivitiesPattern(
 																	  	CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
 																	  	
-																	  	CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
+																	  	CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance()), steps
 																	);
 		
 		this.insertedActivitiesPattern = new InsertedActivitiesPattern(
 																			CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
 																			
-																			CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
+																			CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance()), steps
 																	  );
 		
 		this.controlFlowDifferencePattern = new ControlFlowDifferentDependenciesPattern(
@@ -65,12 +65,12 @@ public class CIACalculation {
 																							
 																							CIABpmnUtil.convertToCollectionGateway(CIABpmnUtil.getGatewayElements(this.oldModel.getModelInstance())), 
 																				
-																							CIABpmnUtil.convertToCollectionGateway(CIABpmnUtil.getGatewayElements(this.updatedModel.getModelInstance()))
+																							CIABpmnUtil.convertToCollectionGateway(CIABpmnUtil.getGatewayElements(this.updatedModel.getModelInstance())), steps
 																						);
 		this.interchangedActivitiesPattern = new InterchangedActivitiesPattern(
 																				CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
 																				
-																				CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
+																				CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance()), steps
 																			  );
 		
 		this.gatewayChanges = new GatewayChanges(
@@ -80,7 +80,7 @@ public class CIACalculation {
 													
 													CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()), 
 													
-													CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance())
+													CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance()), steps
 												);
 		
 		this.artitactChanges = new ArtitactChanges(

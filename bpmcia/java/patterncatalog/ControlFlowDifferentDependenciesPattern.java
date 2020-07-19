@@ -33,7 +33,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 		
 	}
 	
-	public ControlFlowDifferentDependenciesPattern(Collection< ModelElementInstance> activityElementsOld, Collection< ModelElementInstance> activityElementsUpdated, Collection<Gateway> gatewayElementsOld, Collection<Gateway> gatewayElementsUpdated) {
+	public ControlFlowDifferentDependenciesPattern(Collection< ModelElementInstance> activityElementsOld, Collection< ModelElementInstance> activityElementsUpdated, Collection<Gateway> gatewayElementsOld, Collection<Gateway> gatewayElementsUpdated, String steps) {
 		
 		this.changedElements = new ArrayList<ModelElementInstance>();
 		
@@ -52,6 +52,8 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 		
 		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
+		this.steps = steps;
 	}
 	
 	public Collection<ModelElementInstance> getChangedElements() {
@@ -132,26 +134,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 			
 			Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId(element, getModelElementsUpdated());
 			
-			if(targetActivities.size() == 0) {
-		
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT_DEPENDENCY, "There are no directed Inpacted Activity by changing "+element.getAttributeValue("name"));
-				
-				bpmnReportModels.add(bpmnReportModel);
-			
-			}else{
-			
-				for(String targetId: targetActivities) {
-					
-					ModelElementInstance targetElement = CIABpmnUtil.getElement(targetId, getModelElementsUpdated());
-					
-					if(targetElement != null ) {
-						
-						CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT_DEPENDENCY, targetElement.getAttributeValue("name"));
-						
-						bpmnReportModels.add(bpmnReportModel);
-					}	
-				}
-			}
+			inpactedActivitiesSteps(targetActivities, element.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT_DEPENDENCY, getSteps(), getModelElementsUpdated());
 			
 			Collection<String> dataAssociation = CIABpmnUtil.getDataAssociationElements( element, CIABpmnUtil.convertToCollectionActvity(getModelElementsUpdated()));
 			

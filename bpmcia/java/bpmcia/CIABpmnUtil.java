@@ -125,6 +125,15 @@ public class CIABpmnUtil {
 
     }
 	
+	public static final File getFile(String filename) {
+
+		String path = System.getProperty("user.home") + "\\Documents\\GitHub\\BPMNCIAFramework\\bpmcia\\src\\main\\webapp\\models\\";
+              
+        File targetFile = new File(path+filename);
+
+        return targetFile;
+    }
+	
 	public static final Collection<ModelElementInstance> getActivityElements(BpmnModelInstance modelInstance){
 		
 		ModelElementType activityType = modelInstance.getModel().getType(Activity.class);

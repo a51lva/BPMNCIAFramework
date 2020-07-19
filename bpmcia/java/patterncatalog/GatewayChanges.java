@@ -34,7 +34,7 @@ public class GatewayChanges extends ChangePattern{
 		
 	}
 	
-	public GatewayChanges(Collection<ModelElementInstance> gatewayElementsOld, Collection<ModelElementInstance> gatewayElementsUpdated, Collection< ModelElementInstance> oldElements, Collection< ModelElementInstance> updatedElements) {
+	public GatewayChanges(Collection<ModelElementInstance> gatewayElementsOld, Collection<ModelElementInstance> gatewayElementsUpdated, Collection< ModelElementInstance> oldElements, Collection< ModelElementInstance> updatedElements, String steps) {
 		
 		this.gatewayElementsOld = gatewayElementsOld;
 		
@@ -51,6 +51,8 @@ public class GatewayChanges extends ChangePattern{
 		this.bpmnReportModels = new ArrayList<CIABpmnReportModel>();
 		
 		this.bpmnReportModelsChangedELements = new ArrayList<CIABpmnReportModel>();
+		
+		this.steps = steps;
 		
 	}
 
@@ -136,17 +138,8 @@ public class GatewayChanges extends ChangePattern{
 		
 		Collection<String> targetActivities = CIABpmnUtil.getTargetsElementId( element, elements );
 		
-		for( String targetId: targetActivities ) {
-			
-			ModelElementInstance targetElement = CIABpmnUtil.getElement( targetId, elements );
-			
-			if( targetElement != null ) {
-				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(GATEWAYS_WITH_ID + element.getAttributeValue("id"), GATEWAY, changeType, targetElement.getAttributeValue("name"));
-			
-				bpmnReportModels.add(bpmnReportModel);
-			}
-		}
+		inpactedActivitiesSteps(targetActivities, element.getAttributeValue("name"), GATEWAY, changeType, getSteps(), elements);
+	
 	}
 	
 }
