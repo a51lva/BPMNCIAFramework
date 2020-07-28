@@ -102,7 +102,7 @@ public class GatewayChanges extends ChangePattern{
 				
 				changedGateways.add(equivalentElement);
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(GATEWAYS_WITH_ID + equivalentElement.getAttributeValue("id"), GATEWAY, INSERTED_GATEWAY, "");
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(GATEWAYS_WITH_ID + equivalentElement.getAttributeValue("id"), GATEWAY, INSERTED_GATEWAY, "", 1);
 				
 				bpmnReportModelsChangedELements.add(bpmnReportModel);
 				
@@ -121,7 +121,7 @@ public class GatewayChanges extends ChangePattern{
 				
 				changedGateways.add(equivalentElement);
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(GATEWAYS_WITH_ID + equivalentElement.getAttributeValue("id"), GATEWAY, REMOVED_GATEWAY, "");
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(GATEWAYS_WITH_ID + equivalentElement.getAttributeValue("id"), GATEWAY, REMOVED_GATEWAY, "", 1);
 				
 				bpmnReportModelsChangedELements.add(bpmnReportModel);
 				

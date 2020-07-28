@@ -100,7 +100,7 @@ public class ArtitactChanges extends ChangePattern{
 				
 				changedArtifacts.add(equivalentElement);
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentElement.getAttributeValue("name"), ARTIFACT, INSERTED_ARTIFACT, "");
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentElement.getAttributeValue("name"), ARTIFACT, INSERTED_ARTIFACT, "", 1);
 				
 				bpmnReportModelsChangedELements.add(bpmnReportModel);
 				
@@ -118,7 +118,7 @@ public class ArtitactChanges extends ChangePattern{
 				
 				changedArtifacts.add(equivalentElement);
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentElement.getAttributeValue("name"), ARTIFACT, REMOVED_ARTIFACT, "");
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentElement.getAttributeValue("name"), ARTIFACT, REMOVED_ARTIFACT, "", 1);
 
 				bpmnReportModelsChangedELements.add(bpmnReportModel);
 				
@@ -141,7 +141,7 @@ public class ArtitactChanges extends ChangePattern{
 				
 				if( doa.getTarget().getId().equalsIgnoreCase(element.getAttributeValue("id"))) {
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ARTIFACT, changeType, at.getAttributeValue("name"));
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), ARTIFACT, changeType, at.getAttributeValue("name"), 1);
 					
 					bpmnReportModels.add(bpmnReportModel);
 					

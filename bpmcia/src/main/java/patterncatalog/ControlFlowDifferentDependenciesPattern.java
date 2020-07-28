@@ -106,7 +106,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 							
 							changedElements.add(equivalentActivityElement);
 							
-							CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentActivityElement.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT, "");
+							CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentActivityElement.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT, "", 1);
 							
 							bpmnReportModelsChangedELements.add(bpmnReportModel);
 							
@@ -116,7 +116,7 @@ public class ControlFlowDifferentDependenciesPattern extends ChangePattern{
 				}else {
 					
 					changedElements.add(equivalentActivityElement);
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentActivityElement.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT, "");
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(equivalentActivityElement.getAttributeValue("name"), ACTIVITY, CONTROL_FLOW_DIFFERENT, "", 1);
 					
 					bpmnReportModelsChangedELements.add(bpmnReportModel);
 					

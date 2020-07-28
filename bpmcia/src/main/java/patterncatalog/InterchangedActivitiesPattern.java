@@ -91,7 +91,7 @@ public class InterchangedActivitiesPattern extends ChangePattern{
 					
 					interchangedElements.add(updatedEquivalentElement);
 					
-					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( updatedEquivalentElement.getAttributeValue("name"), ACTIVITY, INTERCHANGED_ACTIVITY, "");
+					CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( updatedEquivalentElement.getAttributeValue("name"), ACTIVITY, INTERCHANGED_ACTIVITY, "", 1);
 					
 					bpmnReportModelsChangedELements.add(bpmnReportModel);
 				}				

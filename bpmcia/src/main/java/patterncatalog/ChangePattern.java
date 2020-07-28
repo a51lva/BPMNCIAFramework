@@ -132,7 +132,7 @@ public abstract class ChangePattern{
 			
 			if( targetElement != null ) {
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", changeType, targetElement.getAttributeValue("name")+" [Indirected Inpact]");
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(element.getAttributeValue("name"), "Activity", changeType, targetElement.getAttributeValue("name")+" [Indirected Inpact]", 0);
 				
 				bpmnReportModels.add(bpmnReportModel);
 			}
@@ -141,7 +141,7 @@ public abstract class ChangePattern{
 		return bpmnReportModels;
 	}
 	
-	public Collection<String> calculateInpactedActivitiesSteps(Collection<String> targetActivities, String name, String type, String pattern, Collection<ModelElementInstance> elementInstances) {
+	public Collection<String> calculateInpactedActivitiesSteps(Collection<String> targetActivities, String name, String type, String pattern, Collection<ModelElementInstance> elementInstances, Integer steps) {
 		
 		Collection<String> activities = new ArrayList<String>();
 		
@@ -153,7 +153,9 @@ public abstract class ChangePattern{
 				
 				activities.addAll(CIABpmnUtil.getTargetsElementId(targetElement, elementInstances));
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(name, type, pattern, targetElement.getAttributeValue( "name" ) );
+				String inpactedName = ( steps <= 1 )? targetElement.getAttributeValue( "name" ) : targetElement.getAttributeValue( "name" ) + " [IN "+steps+" STEPS]";
+				
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel(name, type, pattern, inpactedName, steps );
 				
 				bpmnReportModels.add( bpmnReportModel );				
 				
@@ -177,11 +179,11 @@ public abstract class ChangePattern{
 				
 				if(count == 1) {
 					
-					targets = calculateInpactedActivitiesSteps(targetActivities, name, type, pattern, elementInstances);
+					targets = calculateInpactedActivitiesSteps(targetActivities, name, type, pattern, elementInstances, count);
 					
 				}else {
 					
-					targets = calculateInpactedActivitiesSteps(targets, name+" [IN "+count+" STEPS]", type, pattern, elementInstances);
+					targets = calculateInpactedActivitiesSteps(targets, name, type, pattern, elementInstances, count);
 					
 				}
 				

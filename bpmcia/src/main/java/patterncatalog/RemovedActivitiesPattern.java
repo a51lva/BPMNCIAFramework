@@ -78,7 +78,7 @@ public class RemovedActivitiesPattern extends ChangePattern{
 				
 				removedElements.add(equivalentElement);
 				
-				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( equivalentElement.getAttributeValue("name"), ACTIVITY, REMOVED_ACTIVITY, "");
+				CIABpmnReportModel bpmnReportModel = new CIABpmnReportModel( equivalentElement.getAttributeValue("name"), ACTIVITY, REMOVED_ACTIVITY, "", 1);
 				
 				bpmnReportModelsChangedELements.add(bpmnReportModel);
 			}

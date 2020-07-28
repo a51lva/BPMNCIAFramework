@@ -4,6 +4,34 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" class="result-container">
 	
+	<script>
+		function viewBPMNFile(bpmnXML, container){
+			
+			const diagramUrl = './models/'+bpmnXML;
+			
+			const viewer = new BpmnJS({ container: container });
+				
+			$.get(diagramUrl, async function(bpmnXML) {
+				// import diagram
+				  try {
+	
+					  await viewer.importXML(bpmnXML);
+	
+				    // access viewer components
+				    const canvas = viewer.get('canvas');
+	
+				    // zoom to fit full viewport
+				    canvas.zoom('fit-viewport');
+	
+				  } catch (err) {
+	
+				    console.error('could not import BPMN 2.0 diagram', err);
+				  }
+			}, 'text');
+			
+		}
+	</script>
+	
 	<div class="row my-4">
 		<div class="col-12 d-flex justify-content-between align-itens--center">
 			<h1 class="display-4 text-uppercase mb-0">Change Impact Analysis Result</h1>
@@ -50,26 +78,28 @@
 					
 					<div class="tab-content" id="nav-tabContent">
 					  <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
-					  	<table class="table table-hover">
-						  <thead class="thead-light">
-						    <tr>
-						      <th scope="col" width="50px">#</th>
-						      <th scope="col" width="" class="text-uppercase align-middle">Element</th>
-						      <th scope="col" width="50px" class="text-uppercase align-middle">Type</th>
-						      <th scope="col" width="200px" class="text-uppercase align-middle">Cause</th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						  	<ui:repeat var="reportModels" value="#{main.getBpmnReportModelsChangedELements()}" varStatus="status">
-							    <tr>
-							      <th scope="row" class="align-middle">#{status.index + 1}</th>
-							      <td class="align-middle">#{reportModels.getChangedElement()}</td>
-							       <td class="align-middle">#{reportModels.getElementType()}</td>
-							      <td class="align-middle">#{reportModels.getChangePattern()}</td>
-							    </tr>
-						    </ui:repeat>
-						  </tbody>
-						</table>
+					  	<div class="row">
+					  	<div class="col-7 mt-3">						  		
+						  	<div id="canvas3" class="canvas-container"></div>
+		        			<p:remoteCommand onstart="viewBPMNFile('#{main.firstfile}', '#canvas3')" autoRun="true"/>				  	
+					  	</div>
+					  	
+					  	<div class="col-5 mt-3">
+					  		<table class="table table-hover">
+							  
+							  <tbody>
+							  	<ui:repeat var="reportModels" value="#{main.getBpmnReportModelsChangedELements()}" varStatus="status">
+								    <tr>
+								      <th scope="row" class="align-middle">#{status.index + 1}</th>
+								      <td class="align-middle">#{reportModels.getChangedElement()}</td>
+								       <td class="align-middle">#{reportModels.getElementType()}</td>
+								      <td class="align-middle">#{reportModels.getChangePattern()}</td>
+								    </tr>
+							    </ui:repeat>
+							  </tbody>
+							</table>
+	        			</div>
+	        			</div>
 					  </div>
 					  
 					  <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
