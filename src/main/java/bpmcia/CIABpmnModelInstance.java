@@ -19,7 +19,7 @@ public class CIABpmnModelInstance {
 	public CIABpmnModelInstance(String filename) throws IOException {
 		this.filename = filename;		
 		
-		File file = CIABpmnUtil.getFile(filename);
+		File file = CIABpmnUtil.getFileFromResources(filename, getClass().getClassLoader());
 		
 	    this.modelInstance = Bpmn.readModelFromFile(file);
 	    
