@@ -74,7 +74,7 @@ public class Main{
 			System.out.print(e.getMessage());
 		}
 		
-		setAppname("BPMN Based CIA Framework");
+		setAppname("CIA Framework");
 		
 	}
 	
