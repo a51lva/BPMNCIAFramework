@@ -7,7 +7,7 @@
 	<script>
 		function viewBPMNFile(bpmnXML, container){
 			
-			const diagramUrl = "#{resource['uploads:shipModel.bpmn']}";
+			const diagramUrl = './models/'+bpmnXML;
 			
 			const viewer = new BpmnJS({ container: container });
 				
