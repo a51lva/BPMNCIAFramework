@@ -198,10 +198,6 @@ public class CIACalculation {
 		this.steps = steps;
 	}
 	
-	
-	
-	
-	
 	public void execute() {
 		
 		removedActivitiesPattern.execute();
@@ -216,18 +212,21 @@ public class CIACalculation {
 		
 		artitactChanges.execute();
 		
-		setChangedElements(removedActivitiesPattern.getRemovedElements());
-		setChangedElements(insertedActivitiesPattern.getInsertedElements());
-		setChangedElements(controlFlowDifferencePattern.getChangedElements());
-		setChangedElements(interchangedActivitiesPattern.getInterchangedElements());
+		
+		Collection< ModelElementInstance> ce = new ArrayList<ModelElementInstance>();
+		
+		ce.addAll(removedActivitiesPattern.getRemovedElements());
+		ce.addAll(insertedActivitiesPattern.getInsertedElements());
+		ce.addAll(controlFlowDifferencePattern.getChangedElements());
+		ce.addAll(interchangedActivitiesPattern.getInterchangedElements());
+		
+		setChangedElements(ce);
 		
 		calculateInpactedActivities();
 		
 	}
 	
 	private void calculateInpactedActivities() {
-		
-		System.out.println("Steps: "+steps);
 		
 		removedActivitiesPattern.calculateInpactedActivities();
 		

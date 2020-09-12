@@ -1,21 +1,25 @@
 package bpmcia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.camunda.bpm.model.xml.type.ModelElementType;
 import org.primefaces.shaded.json.JSONArray;
 
 @ManagedBean
-@SessionScoped
-public class Main{
-		
+@RequestScoped
+public class Main implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6629697108081988165L;
 	private String appname;
 	private String firstfile, updatedfile;
 	private Collection< ModelElementInstance> elementsOldModel;
@@ -242,9 +246,9 @@ public class Main{
 			
 			int reports = getChangedElements().size();
 			
-			int oldmodels = CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()).size();
+			int numbAct = CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()).size() + (CIABpmnUtil.getActivityElements(this.updatedModel.getModelInstance()).size() - CIABpmnUtil.getActivityElements(this.oldModel.getModelInstance()).size());
 			
-			double div = (double) reports / oldmodels;
+			double div = (double) reports / numbAct;
 			
 			changedActivitiesPercentage = (int)( div * 100 );
 			
