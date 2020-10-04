@@ -43,5 +43,15 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
+	<mime-mapping>
+	    <extension>bpmn</extension>
+	    <mime-type>text/html</mime-type>
+	</mime-mapping>
+	
+	<mime-mapping>
+	    <extension>xml</extension>
+	    <mime-type>text/html</mime-type>
+	</mime-mapping>
 
 </web-app>
